@@ -1,16 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\Project\\ShoppingCart\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\views\\product\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\views\\product\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -18,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -47,32 +38,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Product\\Details.cshtml",
-              "RelativeDocumentMoniker": "ShoppingCart\\Views\\Product\\Details.cshtml",
-              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Product\\Details.cshtml",
-              "RelativeToolTip": "ShoppingCart\\Views\\Product\\Details.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-16T14:41:33.389Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Product\\Index.cshtml",
-              "RelativeDocumentMoniker": "ShoppingCart\\Views\\Product\\Index.cshtml",
-              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Product\\Index.cshtml",
-              "RelativeToolTip": "ShoppingCart\\Views\\Product\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-16T14:41:02.539Z",
-              "EditorCaption": ""
             }
           ]
         }

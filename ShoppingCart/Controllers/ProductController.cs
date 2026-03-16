@@ -8,5 +8,10 @@ namespace ShoppingCart.Controllers
         {
             return View();
         }
+
+        public IActionResult Details()
+        {
+            return View();
+        }
     }
 }

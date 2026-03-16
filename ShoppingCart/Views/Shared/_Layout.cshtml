@@ -122,9 +122,9 @@
 									<ul role="menu" class="sub-menu">
 										@* mặc định chọn Index trong CategoryController *@
 										<li><a asp-controller="Category">Categories</a></li>
-										<li><a >Product Details</a></li>
-										<li><a >Checkout</a></li>
-										<li><a >Cart</a></li>
+										<li><a asp-controller="Product" asp-action="Details">Product Details</a></li>
+										<li><a asp-controller="Cart" asp-action="Checkout">Checkout</a></li>
+										<li><a asp-controller="Cart">Cart</a></li>
 										<li><a >Login</a></li>
 									</ul>
 								</li>
