@@ -109,3 +109,4 @@ E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\c1mfn25pv5-nvd1
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\ibqrxvjtxf-y2a4nngxpc.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\c0iyoz6fkt-59kgvyuv06.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\8a648t18lp-7wrb4rnl2v.gz
+E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\ShoppingCart.sourcelink.json
