@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Repository;
+
 namespace ShoppingCart
 {
     public class Program
@@ -5,6 +8,12 @@ namespace ShoppingCart
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Connection db
+            builder.Services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectedDb"]);
+            });
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
