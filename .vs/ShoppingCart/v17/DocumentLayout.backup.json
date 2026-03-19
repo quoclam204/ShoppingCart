@@ -7,20 +7,16 @@
       "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\views\\shared\\_sidebarpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\views\\shared\\components\\brands\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\views\\shared\\components\\brands\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\views\\shared\\components\\categories\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\views\\shared\\components\\categories\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\repository\\components\\brandsviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\repository\\components\\brandsviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\repository\\components\\categoriesviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\repository\\components\\categoriesviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|e:\\project\\shoppingcart\\shoppingcart\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E0568ADC-8520-4939-96E9-1C3D302CC562}|ShoppingCart\\ShoppingCart.csproj|solutionrelative:shoppingcart\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,41 +58,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Default.cshtml",
-              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Shared\\Components\\Brands\\Default.cshtml",
-              "RelativeDocumentMoniker": "ShoppingCart\\Views\\Shared\\Components\\Brands\\Default.cshtml",
-              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Shared\\Components\\Brands\\Default.cshtml*",
-              "RelativeToolTip": "ShoppingCart\\Views\\Shared\\Components\\Brands\\Default.cshtml*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-19T05:21:41.397Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "BrandsViewComponent.cs",
-              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Repository\\Components\\BrandsViewComponent.cs",
-              "RelativeDocumentMoniker": "ShoppingCart\\Repository\\Components\\BrandsViewComponent.cs",
-              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Repository\\Components\\BrandsViewComponent.cs",
-              "RelativeToolTip": "ShoppingCart\\Repository\\Components\\BrandsViewComponent.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T05:16:31.277Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "ShoppingCart\\Views\\Home\\Index.cshtml",
+              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "ShoppingCart\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-19T07:21:04.858Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CategoriesViewComponent.cs",
-              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Repository\\Components\\CategoriesViewComponent.cs",
-              "RelativeDocumentMoniker": "ShoppingCart\\Repository\\Components\\CategoriesViewComponent.cs",
-              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Repository\\Components\\CategoriesViewComponent.cs",
-              "RelativeToolTip": "ShoppingCart\\Repository\\Components\\CategoriesViewComponent.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "ShoppingCart\\Controllers\\HomeController.cs",
+              "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "ShoppingCart\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-18T18:30:40.338Z",
+              "WhenOpened": "2026-03-19T07:15:56.031Z",
               "EditorCaption": ""
             },
             {
@@ -107,20 +90,20 @@
               "RelativeDocumentMoniker": "ShoppingCart\\Views\\Shared\\_SidebarPartial.cshtml",
               "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Shared\\_SidebarPartial.cshtml",
               "RelativeToolTip": "ShoppingCart\\Views\\Shared\\_SidebarPartial.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-03-18T18:22:49.645Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Default.cshtml",
               "DocumentMoniker": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Shared\\Components\\Categories\\Default.cshtml",
               "RelativeDocumentMoniker": "ShoppingCart\\Views\\Shared\\Components\\Categories\\Default.cshtml",
               "ToolTip": "E:\\Project\\ShoppingCart\\ShoppingCart\\Views\\Shared\\Components\\Categories\\Default.cshtml",
               "RelativeToolTip": "ShoppingCart\\Views\\Shared\\Components\\Categories\\Default.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-03-18T18:21:28.407Z",
               "EditorCaption": ""

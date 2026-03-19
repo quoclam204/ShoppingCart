@@ -7,6 +7,8 @@ wwwroot\css\price-range.css
 wwwroot\css\responsive.css
 wwwroot\favicon.ico
 wwwroot\images\gallery1.jpg
+wwwroot\images\macbook.jpg
+wwwroot\images\pc.jpg
 wwwroot\js\bootstrap.min.js
 wwwroot\js\contact.js
 wwwroot\js\gmaps.js
