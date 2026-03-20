@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Repository;
 
 namespace ShoppingCart
@@ -18,6 +18,10 @@ namespace ShoppingCart
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -30,6 +34,9 @@ namespace ShoppingCart
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            // bộ nhớ tạm để lưu dữ liệu người dùng như: giỏ hàng, trạng thái đăng nhập
+            app.UseSession();
 
             app.UseAuthorization();
 
