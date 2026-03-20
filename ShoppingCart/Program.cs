@@ -20,7 +20,12 @@ namespace ShoppingCart
 
             builder.Services.AddDistributedMemoryCache();
 
-            builder.Services.AddSession();
+            builder.Services.AddSession(optiosns =>
+            {
+                optiosns.IdleTimeout = TimeSpan.FromMinutes(30);
+                optiosns.Cookie.HttpOnly = true;
+                optiosns.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
