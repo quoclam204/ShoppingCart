@@ -5,11 +5,11 @@ namespace ShoppingCart.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly DataContext _datacontext;
+        private readonly DataContext _dataContext;
 
         public ProductController(DataContext context)
         {
-            _datacontext = context;
+            _dataContext = context;
         }
 
         public IActionResult Index()
@@ -22,7 +22,7 @@ namespace ShoppingCart.Controllers
             if (Id == null)
                 return RedirectToAction("Index");
 
-            var productsById = _datacontext.Products.Where(p => p.Id == Id).FirstOrDefault();
+            var productsById = _dataContext.Products.Where(p => p.Id == Id).FirstOrDefault();
 
             return View(productsById);
         }
