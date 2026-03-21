@@ -19,6 +19,9 @@
             
         }
 
+        // lấy dữ liệu từ sản phẩm gán vào giỏ hàng
+        //ProductModel = sản phẩm trong shop(VD: iPhone)
+        //CartItemModel = sản phẩm khi đã được thêm vào giỏ
         public CartItemModel(ProductModel product)
         {
             ProductId = product.Id; 
