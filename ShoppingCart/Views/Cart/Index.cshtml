@@ -5,8 +5,8 @@
     <div class="container">
         <div class="breadcrumbs">
             <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li class="active">Shopping Cart</li>
+                <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="active">Giỏ hàng</li>
             </ol>
         </div>
         <div class="table-responsive cart_info">
@@ -40,7 +40,7 @@
                                     <a class="btn btn-default btn-sm" asp-controller="Cart" asp-action="Increase" asp-route-id="@item.ProductId"> + </a>
                                     <input class="cart_quantity_input" type="text" name="quantity" value="@item.Quantity" autocomplete="off" size="2">
                                     <a class="btn btn-success btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-id="@item.ProductId"> - </a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-id="@item.ProductId"> Xóa </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId"> Xóa </a>
                                 </td>
                                 <td class="cart_total">
                                     <p class="cart_total_price">@Model.CartItems.Where(x => x.ProductId == item.ProductId).Sum(x => x.Quantity * x.Price).ToString()</p>
@@ -50,9 +50,12 @@
                                 </td>
                             </tr>
                         }
-                        <tr>
-                            <td rowspan="6">
+                        <tr rowspan="6">
+                            <td>
                                 Tổng: <p class="cart_total_price"> @Model.GrandTotal.ToString()</p>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear"> Xóa tất cả sản phẩm </a>
                             </td>
                         </tr>
                     }

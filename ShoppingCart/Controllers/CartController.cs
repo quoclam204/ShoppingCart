@@ -38,10 +38,13 @@ namespace ShoppingCart.Controllers
         // thêm sản phẩm vào giỏ hàng
         public async Task<IActionResult> AddCartProduct(int Id)
         {
+            // Lấy sản phẩm từ database
             ProductModel product = await _dataContext.Products.FindAsync(Id);
 
+            // Lấy giỏ hàng của user
             List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
 
+            // Kt sản phẩm đó có trong giỏ hàng chưa
             CartItemModel cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
 
             if (cartItems == null)
@@ -55,6 +58,7 @@ namespace ShoppingCart.Controllers
                 cartItems.Quantity += 1;
             }
 
+            // Cập nhật giỏ hàng vào bộ nhớ tạm của user
             HttpContext.Session.SetJson("Cart", cart);
 
             return Redirect(Request.Headers["Referer"].ToString());
@@ -63,7 +67,7 @@ namespace ShoppingCart.Controllers
         // giảm số lượng sản phẩm trong giỏ hàng
         public async Task<IActionResult> Decrease(int Id)
         {
-            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
+            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
 
             CartItemModel cartItem = cart.Where(c => c.ProductId == Id).FirstOrDefault();
 
@@ -91,16 +95,44 @@ namespace ShoppingCart.Controllers
         // tăng số lượng sản phẩm trong giỏ hàng
         public async Task<IActionResult> Increase(int Id)
         {
-            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
+            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
 
             CartItemModel cartItem = cart.Where(c => c.ProductId == Id).FirstOrDefault();
 
             if (cartItem != null)
             {
-                cartItem.Quantity++; 
+                cartItem.Quantity++;
             }
 
             HttpContext.Session.SetJson("Cart", cart);
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Remove(int Id)
+        {
+            // lấy danh sách Session của giỏ hàng
+            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
+
+            cart.RemoveAll(p => p.ProductId == Id);
+
+            if (cart.Count == 0)
+            {
+                // nếu xóa hết sản phẩm trong giỏ hàng thì xóa luôn Session
+                HttpContext.Session.Remove("Cart");
+            }
+            else
+            {
+                // nếu 5 sp xóa 1 sp thì còn 4sp
+                HttpContext.Session.SetJson("Cart", cart);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Clear(int Id)
+        {
+            HttpContext.Session.Remove("Cart");
 
             return RedirectToAction("Index");
         }
