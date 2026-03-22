@@ -96,7 +96,6 @@ E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\ref\ShoppingCart.dll
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\ezkrde3xvs-4n2duddgf0.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\dqcea7nasr-a03q467kau.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\2xwatdtacy-3je3f2rw5a.gz
-E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\h6m2ajucwf-qtq4xdn8qs.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\m4pfi14kxk-2al6ftd5ju.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\7o6vyzg7sb-4iqjtdhhvf.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\bmiqyisy9w-rpy24pqr5p.gz
@@ -234,3 +233,4 @@ E:\Project\ShoppingCart\ShoppingCart\bin\Debug\net9.0\runtimes\win\lib\net6.0\Sy
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\ShoppingCart.csproj.AssemblyReference.cache
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\Shopping.CB5956BC.Up2Date
 E:\Project\ShoppingCart\ShoppingCart\bin\Debug\net9.0\Newtonsoft.Json.dll
+E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\h6m2ajucwf-qczjadymfl.gz

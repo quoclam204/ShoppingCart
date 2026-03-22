@@ -61,6 +61,7 @@ namespace ShoppingCart.Controllers
             // Cập nhật giỏ hàng vào bộ nhớ tạm của user
             HttpContext.Session.SetJson("Cart", cart);
 
+            TempData["success"] = "Thêm sản phẩm vào giỏ hàng thành công!";
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
@@ -89,6 +90,7 @@ namespace ShoppingCart.Controllers
                 HttpContext.Session.SetJson("Cart", cart);
             }
 
+            TempData["success"] = "Giảm số lượng sản phẩm trong giỏ hàng thành công!";
             return RedirectToAction("Index");
         }
 
@@ -106,6 +108,7 @@ namespace ShoppingCart.Controllers
 
             HttpContext.Session.SetJson("Cart", cart);
 
+            TempData["success"] = "Tăng số lượng sản phẩm trong giỏ hàng thành công!";
             return RedirectToAction("Index");
         }
 
@@ -127,6 +130,7 @@ namespace ShoppingCart.Controllers
                 HttpContext.Session.SetJson("Cart", cart);
             }
 
+            TempData["success"] = "Xóa sản phẩm khỏi giỏ hàng thành công!";
             return RedirectToAction("Index");
         }
 
@@ -134,6 +138,7 @@ namespace ShoppingCart.Controllers
         {
             HttpContext.Session.Remove("Cart");
 
+            TempData["success"] = "Xóa tất cả sản phẩm khỏi giỏ hàng thành công!";
             return RedirectToAction("Index");
         }
     }

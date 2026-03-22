@@ -1536,13 +1536,22 @@ h2.title {
   padding-left: 0;
 }
 
-.breadcrumbs .breadcrumb li a {
+/*.breadcrumbs .breadcrumb li a {
   background:#FE980F;
   color: #FFFFFF;
   padding: 3px 7px;
-}
+}*/
 
-.breadcrumbs .breadcrumb li a:after {
+	.breadcrumbs .breadcrumb li a {
+		background: #FE980F;
+		color: #FFFFFF;
+		display: inline-block;
+		padding: 6px 15px; /* tăng khoảng cách */
+		line-height: 20px; /* tránh cắt dấu */
+		position: relative; /* BẮT BUỘC */
+	}
+
+/*.breadcrumbs .breadcrumb li a:after {
   content:"";
   height:auto;
   width: auto;
@@ -1553,7 +1562,19 @@ h2.title {
   top: 11px;
   left:48px;
 
-}
+}*/
+
+		.breadcrumbs .breadcrumb li a:after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%); /* căn giữa */
+			left: 100%; /* sát bên phải */
+
+			border-width: 8px;
+			border-style: solid;
+			border-color: transparent transparent transparent #FE980F;
+		}
 
 .breadcrumbs .breadcrumb > li + li:before {
   content: " ";
