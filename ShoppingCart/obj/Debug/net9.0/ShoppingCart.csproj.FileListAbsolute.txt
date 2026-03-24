@@ -81,8 +81,6 @@ E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\so85xaq6xp-2z0n
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\ae4hctfq79-muycvpuwrr.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\oxgzbh3ffc-87fc7y1x7t.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\pgvhrpjvpg-mlv21k5csn.gz
-E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\1zkje8xamw-1s88fldsv9.gz
-E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\vee21qco29-1s88fldsv9.gz
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\staticwebassets.build.json
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\staticwebassets.build.json.cache
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\staticwebassets.development.json
@@ -234,3 +232,6 @@ E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\ShoppingCart.csproj.Assemb
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\Shopping.CB5956BC.Up2Date
 E:\Project\ShoppingCart\ShoppingCart\bin\Debug\net9.0\Newtonsoft.Json.dll
 E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\h6m2ajucwf-qczjadymfl.gz
+E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\scopedcss\Areas\Admin\Views\Shared\_Layout.cshtml.rz.scp.css
+E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\1zkje8xamw-pye5pxs7nu.gz
+E:\Project\ShoppingCart\ShoppingCart\obj\Debug\net9.0\compressed\vee21qco29-pye5pxs7nu.gz
