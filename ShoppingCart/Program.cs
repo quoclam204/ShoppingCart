@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Repository;
+using System.Runtime.InteropServices;
 
 namespace ShoppingCart
 {
@@ -47,15 +48,17 @@ namespace ShoppingCart
 
             app.MapStaticAssets();
 
+            //Route càng cụ thể → đặt lên trên
+            //Route càng chung → đặt xuống dưới
+            app.MapControllerRoute(
+                name: "Areas",
+                pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}")
+                .WithStaticAssets();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
-
-            app.MapControllerRoute(
-               name: "Areas",
-               pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}")
-               .WithStaticAssets();
 
             // seeding data
             var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();

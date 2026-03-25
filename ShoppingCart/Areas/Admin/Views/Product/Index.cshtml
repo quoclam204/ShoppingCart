@@ -1,4 +1,5 @@
 ﻿@* Kết nối với ProductController *@
+@* View này nhận một danh sách nhiều sản phẩm *@
 @model IEnumerable<ProductModel>
 
 @{
@@ -7,7 +8,7 @@
     
 <h3>Danh sách sản phẩm</h3>
 
-<a asp-action="Add" asp-controller="Product" class="btn btn-primary btn-sm">Thêm sản phẩm</a>
+<a asp-action="Create" asp-controller="Product" class="btn btn-primary btn-sm">Thêm sản phẩm</a>
 
 <table class="table">
     <thead>

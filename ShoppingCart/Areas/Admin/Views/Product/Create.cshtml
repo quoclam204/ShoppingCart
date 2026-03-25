@@ -1,0 +1,63 @@
+﻿@* View này nhận 1 đối tượng duy nhất *@
+@model ProductModel
+
+@{
+    ViewData["title"] = "Create Product";
+}
+
+<h3>Thêm sản phẩm</h3>
+
+<div class="col-md-9">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label>Tên</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label>Giá</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label>Mô tả</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label>Danh mục</label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                <option>--Choose a category</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label>Thương hiệu</label>
+            <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
+                <option>--Choose a brand</option>
+            </select>
+            <span asp-validation-for="BrandId" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label>Hình ảnh</label>
+            <input asp-for="Image" class="form-control" />
+            <span asp-validation-for="Image" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+        </div>
+
+    </form>
+
+    <a asp-action="Index" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left"></i> Quay lại trang sản phẩm
+    </a>
+
+</div>
