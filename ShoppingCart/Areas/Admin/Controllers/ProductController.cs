@@ -41,7 +41,29 @@ namespace ShoppingCart.Areas.Admin.Controllers
             ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", product.CategoryId);
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", product.BrandId);
 
-            return View(product);
+            if (ModelState.IsValid)
+            {
+                TempData["success"] = "Thêm sản phẩm thành công!";
+            }
+            else
+            {
+                TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
+                
+                // lấy lỗi chi tiết
+                List<string> errors = new List<string>();
+                // ModelState.Values → tất cả field (Name, Price,…)
+                foreach (var value in ModelState.Values)
+                {
+                    // value.Errors → lỗi của từng field
+                    foreach (var error in value.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }    
+                }
+                string errorMessage = string.Join("\n", errors);
+                return BadRequest(errorMessage);
+            }
+                return View(product);
         }
     }
 }
