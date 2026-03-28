@@ -67,8 +67,10 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/47.6.1/ckeditor5.umd.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('Description');
+        CKEDITOR.replace('Description', {
+            versionCheck: false
+        });
     </script>
 }
