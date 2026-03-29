@@ -34,7 +34,7 @@ namespace ShoppingCart.Models
         public string Image { get; set; } = "default-image.jpg";
 
         [NotMapped]
-        [FileExtensions]
+        [FileExtension]
         public IFormFile ImageUpLoad { get; set; }
     }
 }

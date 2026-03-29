@@ -43,7 +43,32 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                TempData["success"] = "Thêm sản phẩm thành công!";
+                // test trước có thêm được không
+                //TempData["success"] = "Thêm sản phẩm thành công!";
+
+                // thêm dữ liệu
+                product.Slug = product.Name.ToLower().Replace(" ", "-");
+                var slug = await _dataContext.Products.Where(p => p.Slug == product.Slug).FirstOrDefaultAsync();
+
+                if(slug != null)
+                {
+                    ModelState.AddModelError("Name", "Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.");
+                    return View(product);
+                }
+                else
+                {
+                    if(product.ImageUpLoad != null)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageUpLoad.FileName);
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await product.ImageUpLoad.CopyToAsync(stream);
+                        }
+                        product.Image = fileName;
+                    }
+                }    
+
             }
             else
             {
