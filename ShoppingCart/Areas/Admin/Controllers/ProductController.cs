@@ -11,9 +11,13 @@ namespace ShoppingCart.Areas.Admin.Controllers
     {
         private readonly DataContext _dataContext;
 
-        public ProductController(DataContext context)
+        // chỉ đến thư mục lưu ảnh trong server
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ProductController(DataContext context, IWebHostEnvironment webHostEnvironment)
         {
             _dataContext = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -50,30 +54,41 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 product.Slug = product.Name.ToLower().Replace(" ", "-");
                 var slug = await _dataContext.Products.Where(p => p.Slug == product.Slug).FirstOrDefaultAsync();
 
-                if(slug != null)
+                if (slug != null)
                 {
                     ModelState.AddModelError("Name", "Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.");
                     return View(product);
                 }
                 else
                 {
-                    if(product.ImageUpLoad != null)
+                    // Kiểm tra người dùng có upload ảnh hay không
+                    if (product.ImageUpLoad != null)
                     {
-                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageUpLoad.FileName);
-                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await product.ImageUpLoad.CopyToAsync(stream);
-                        }
-                        product.Image = fileName;
+                        // đường dẫn đến thư mục lưu ảnh trong server
+                        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+                        // tên ảnh để lưu vào database (đảm bảo không trùng tên)
+                        string imageName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageUpLoad.FileName);
+                        string filePath = Path.Combine(uploadDir, imageName);
+
+                        FileStream fs = new FileStream(filePath, FileMode.Create);
+                        await product.ImageUpLoad.CopyToAsync(fs);
+                        fs.Close();
+
+                        // lưu tên ảnh vào database
+                        product.Image = imageName;
                     }
-                }    
+                }
+                _dataContext.Add(product);
+                await _dataContext.SaveChangesAsync();
+
+                TempData["success"] = "Thêm sản phẩm thành công!";
+                return RedirectToAction("Index");
 
             }
             else
             {
                 TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
-                
+
                 // lấy lỗi chi tiết
                 List<string> errors = new List<string>();
                 // ModelState.Values → tất cả field (Name, Price,…)
@@ -83,12 +98,12 @@ namespace ShoppingCart.Areas.Admin.Controllers
                     foreach (var error in value.Errors)
                     {
                         errors.Add(error.ErrorMessage);
-                    }    
+                    }
                 }
                 string errorMessage = string.Join("\n", errors);
                 return BadRequest(errorMessage);
             }
-                return View(product);
+            return View(product);   
         }
     }
 }
