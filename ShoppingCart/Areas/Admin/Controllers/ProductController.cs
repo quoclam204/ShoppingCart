@@ -26,6 +26,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 Include(p => p.Category).Include(p => p.Brand).ToListAsync());
         }
 
+        // Thêm sản phẩm
         // GET: Hiển thị form
         [HttpGet]
         public IActionResult Create()
@@ -103,7 +104,113 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 string errorMessage = string.Join("\n", errors);
                 return BadRequest(errorMessage);
             }
-            return View(product);   
+            return View(product);
         }
+
+        // Sửa sản phẩm
+        [HttpGet]
+        public async Task<IActionResult> Edit(int Id)
+        {
+            ProductModel product = await _dataContext.Products.FindAsync(Id);
+            ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", product.CategoryId);
+            ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", product.BrandId);
+
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int Id, ProductModel product)
+        {
+            ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", product.CategoryId);
+            ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", product.BrandId);
+
+            if (ModelState.IsValid)
+            {
+                // tạo slug
+                var slug = product.Name.ToLower().Replace(" ", "-");
+
+                var checkSlug = await _dataContext.Products
+                    .Where(p => p.Slug == slug && p.Id != Id)
+                    .FirstOrDefaultAsync();
+
+                if (checkSlug != null)
+                {
+                    ModelState.AddModelError("Name", "Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.");
+                    return View(product);
+                }
+
+                // lấy product từ DB (đã track)
+                var existingProduct = await _dataContext.Products.FindAsync(Id);
+
+                if (existingProduct == null)
+                {
+                    return NotFound();
+                }
+
+                // cập nhật dữ liệu
+                existingProduct.Name = product.Name;
+                existingProduct.Price = product.Price;
+                existingProduct.Description = product.Description;
+                existingProduct.CategoryId = product.CategoryId;
+                existingProduct.BrandId = product.BrandId;
+                existingProduct.Slug = slug;
+
+                // xử lý ảnh
+                if (product.ImageUpLoad == null)
+                {
+                    // giữ ảnh cũ → không cần làm gì
+                }
+                else
+                {
+                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+
+                    // xóa ảnh cũ (nếu có)
+                    if (!string.IsNullOrEmpty(existingProduct.Image))
+                    {
+                        string oldPath = Path.Combine(uploadDir, existingProduct.Image);
+                        if (System.IO.File.Exists(oldPath))
+                        {
+                            System.IO.File.Delete(oldPath);
+                        }
+                    }
+
+                    string imageName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageUpLoad.FileName);
+                    string filePath = Path.Combine(uploadDir, imageName);
+
+                    using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                    {
+                        await product.ImageUpLoad.CopyToAsync(fs);
+                    }
+
+                    existingProduct.Image = imageName;
+                }
+
+                //  BỎ dòng này:
+                // _dataContext.Update(product);
+
+                await _dataContext.SaveChangesAsync();
+
+                TempData["success"] = "Cập nhật sản phẩm thành công!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
+
+                List<string> errors = new List<string>();
+                foreach (var value in ModelState.Values)
+                {
+                    foreach (var error in value.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }
+                }
+
+                string errorMessage = string.Join("\n", errors);
+                return BadRequest(errorMessage);
+            }
+        }
+
     }
 }
