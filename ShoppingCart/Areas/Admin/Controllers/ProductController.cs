@@ -212,5 +212,33 @@ namespace ShoppingCart.Areas.Admin.Controllers
             }
         }
 
+
+        
+        public async Task<IActionResult> Delete(int Id)
+        {
+            ProductModel product = await _dataContext.Products.FindAsync(Id);
+
+            // Kiểm tra sản phẩm có đang dùng ảnh mặc định không
+            if (!string.Equals(product.Image, "default-image.jpg"))
+            {
+                // thư mục chứa ảnh
+                string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+                // Ghép thêm tên file ảnh. (đường dẫn đầy đủ tới file ảnh cụ thể)
+                string filePath = Path.Combine(uploadDir, product.Image);
+
+                // kiểm tra file có tồn tại không
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            _dataContext.Products.Remove(product);
+            await _dataContext.SaveChangesAsync();
+
+            TempData["success"] = "Sản phẩm đã xóa.";
+
+            return RedirectToAction("Index");
+        }
     }
 }
