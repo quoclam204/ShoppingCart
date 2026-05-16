@@ -31,10 +31,10 @@ namespace ShoppingCart.Models
         public BrandModel Brand { get; set; }   
         public CategoryModel Category { get; set; }
 
-        public string Image { get; set; } = "default-image.jpg";
+        public string Image { get; set; }
 
         [NotMapped]
         [FileExtension]
-        public IFormFile ImageUpLoad { get; set; }
+        public IFormFile? ImageUpLoad { get; set; }
     }
 }

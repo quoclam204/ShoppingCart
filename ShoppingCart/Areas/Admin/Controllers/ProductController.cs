@@ -126,10 +126,9 @@ namespace ShoppingCart.Areas.Admin.Controllers
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", product.BrandId);
 
             if (ModelState.IsValid)
-            {
-                // tạo slug
+            {           
+                // 1. Tạo slug và kiểm tra trùng lặp
                 var slug = product.Name.ToLower().Replace(" ", "-");
-
                 var checkSlug = await _dataContext.Products
                     .Where(p => p.Slug == slug && p.Id != Id)
                     .FirstOrDefaultAsync();
@@ -140,15 +139,14 @@ namespace ShoppingCart.Areas.Admin.Controllers
                     return View(product);
                 }
 
-                // lấy product từ DB (đã track)
+                // 2. Lấy sản phẩm hiện tại từ DB
                 var existingProduct = await _dataContext.Products.FindAsync(Id);
-
                 if (existingProduct == null)
                 {
                     return NotFound();
                 }
 
-                // cập nhật dữ liệu
+                // 3. Cập nhật các thông tin cơ bản
                 existingProduct.Name = product.Name;
                 existingProduct.Price = product.Price;
                 existingProduct.Description = product.Description;
@@ -156,39 +154,44 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 existingProduct.BrandId = product.BrandId;
                 existingProduct.Slug = slug;
 
-                // xử lý ảnh
-                if (product.ImageUpLoad == null)
+                // 4. Xử lý tải lên ảnh mới (nếu có)
+                if (product.ImageUpLoad != null)
                 {
-                    // giữ ảnh cũ → không cần làm gì
-                }
-                else
-                {
-                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
-
-                    // xóa ảnh cũ (nếu có)
-                    if (!string.IsNullOrEmpty(existingProduct.Image))
+                    try
                     {
-                        string oldPath = Path.Combine(uploadDir, existingProduct.Image);
-                        if (System.IO.File.Exists(oldPath))
+                        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+
+                        // Bước A: Xóa ảnh cũ trên ổ đĩa nếu tồn tại
+                        if (!string.IsNullOrEmpty(existingProduct.Image))
                         {
-                            System.IO.File.Delete(oldPath);
+                            string oldPath = Path.Combine(uploadDir, existingProduct.Image);
+                            // Tránh xóa ảnh mặc định của hệ thống nếu bạn có quy ước (ví dụ: noimage.png)
+                            if (existingProduct.Image != "noimage.png" && System.IO.File.Exists(oldPath))
+                            {
+                                System.IO.File.Delete(oldPath);
+                            }
                         }
+
+                        // Bước B: Lưu ảnh mới vào thư mục
+                        string imageName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageUpLoad.FileName);
+                        string filePath = Path.Combine(uploadDir, imageName);
+
+                        using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                        {
+                            await product.ImageUpLoad.CopyToAsync(fs);
+                        }
+
+                        // Bước C: Cập nhật tên ảnh mới vào database
+                        existingProduct.Image = imageName;
                     }
-
-                    string imageName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageUpLoad.FileName);
-                    string filePath = Path.Combine(uploadDir, imageName);
-
-                    using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                    catch (Exception ex)
                     {
-                        await product.ImageUpLoad.CopyToAsync(fs);
+                        ModelState.AddModelError("", "Đã xảy ra lỗi khi xử lý hình ảnh sản phẩm.");
+                        return View(product);
                     }
-
-                    existingProduct.Image = imageName;
                 }
 
-                //  BỎ dòng này:
-                // _dataContext.Update(product);
-
+                // 5. Lưu thay đổi vào Database
                 await _dataContext.SaveChangesAsync();
 
                 TempData["success"] = "Cập nhật sản phẩm thành công!";
@@ -197,40 +200,37 @@ namespace ShoppingCart.Areas.Admin.Controllers
             else
             {
                 TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
-
-                List<string> errors = new List<string>();
-                foreach (var value in ModelState.Values)
-                {
-                    foreach (var error in value.Errors)
-                    {
-                        errors.Add(error.ErrorMessage);
-                    }
-                }
-
-                string errorMessage = string.Join("\n", errors);
-                return BadRequest(errorMessage);
+                return View(product); // Nên trả về View cùng dữ liệu cũ để người dùng sửa thay vì BadRequest text thô
             }
         }
 
 
-        
         public async Task<IActionResult> Delete(int Id)
         {
             ProductModel product = await _dataContext.Products.FindAsync(Id);
 
-            // Kiểm tra sản phẩm có đang dùng ảnh mặc định không
-            if (!string.Equals(product.Image, "default-image.jpg"))
+            if (product == null)
             {
-                // thư mục chứa ảnh
-                string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
-                // Ghép thêm tên file ảnh. (đường dẫn đầy đủ tới file ảnh cụ thể)
-                string filePath = Path.Combine(uploadDir, product.Image);
+                return NotFound();
+            }
 
+            // thư mục chứa ảnh
+            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+            // Ghép thêm tên file ảnh. (đường dẫn đầy đủ tới file ảnh cụ thể)
+            string oldfilePath = Path.Combine(uploadDir, product.Image);
+
+            // Kiểm tra sản phẩm có đang dùng ảnh mặc định không
+            try
+            {
                 // kiểm tra file có tồn tại không
-                if (System.IO.File.Exists(filePath))
+                if (System.IO.File.Exists(oldfilePath))
                 {
-                    System.IO.File.Delete(filePath);
+                    System.IO.File.Delete(oldfilePath);
                 }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi khi xóa ảnh sản phẩm.");
             }
 
             _dataContext.Products.Remove(product);
