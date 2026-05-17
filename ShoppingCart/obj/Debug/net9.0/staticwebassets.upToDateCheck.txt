@@ -79,7 +79,8 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\media\products\add253d2-4c8c-460a-9322-d15fdbe933c1.jpg
+wwwroot\media\products\6a63b111-9c7e-42f9-975e-8c33bf74d4ce.jpg
+wwwroot\media\products\c80b3e04-898a-443d-a96b-ebbb6202cea7.jpg
 E:\Project\ShoppingCart\ShoppingCart\wwwroot\css\bootstrap.min.css
 E:\Project\ShoppingCart\ShoppingCart\wwwroot\favicon.ico
 E:\Project\ShoppingCart\ShoppingCart\wwwroot\css\animate.css

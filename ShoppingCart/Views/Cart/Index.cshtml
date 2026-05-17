@@ -9,6 +9,15 @@
                 <li class="active">Giỏ hàng</li>
             </ol>
         </div>
+
+        <style>
+            .cart_product img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+            }
+        </style>
+
         <div class="table-responsive cart_info">
             <table class="table table-condensed">
                 <thead>
@@ -28,7 +37,8 @@
                         {
                             <tr>
                                 <td class="cart_product">
-                                    <a href=""><img src="~images/@item.Image" alt=""></a>
+                                    @* ~/media/products/@item.Image *@
+                                    <a href=""><img src="~/media/products/@item.Image" alt=""></a>
                                 </td>
                                 <td class="cart_description">
                                     <h4><a href="">@item.ProductName</a></h4>
