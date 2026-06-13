@@ -11,7 +11,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
     {
         private readonly DataContext _dataContext;
 
-        // chỉ đến thư mục lưu ảnh trong server
+        // chỉ đến thư mục lưu ảnh trong server -> dùng để upload file ảnh
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductController(DataContext context, IWebHostEnvironment webHostEnvironment)
