@@ -204,7 +204,6 @@ namespace ShoppingCart.Areas.Admin.Controllers
             }
         }
 
-
         public async Task<IActionResult> Delete(int Id)
         {
             ProductModel product = await _dataContext.Products.FindAsync(Id);

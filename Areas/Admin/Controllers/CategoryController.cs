@@ -22,6 +22,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
             return View(await _dataContext.Categories.OrderByDescending(p => p.Id).ToListAsync());
         }
 
+        #region Create category
         [HttpGet]
         public IActionResult Create()
         {
@@ -78,6 +79,62 @@ namespace ShoppingCart.Areas.Admin.Controllers
             }
             return View(category);
         }
+        #endregion
+
+        #region Edit category
+        [HttpGet]
+        public async Task<IActionResult> Edit(int Id)
+        {
+            CategoryModel category = await _dataContext.Categories.FindAsync(Id);
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int Id, CategoryModel category)
+        {
+            if (ModelState.IsValid)
+            {
+                // 1. Tạo slug và kiểm tra trùng lặp
+                var slug = category.Name.ToLower().Replace(" ", "-");
+                var checkSlug = await _dataContext.Categories
+                    .Where(p => p.Slug == slug && p.Id != Id)
+                    .FirstOrDefaultAsync();
+
+                if (checkSlug != null)
+                {
+                    ModelState.AddModelError("Name", "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.");
+                    return View(category);
+                }
+
+                // 2. Lấy sản phẩm hiện tại từ DB
+                var existingProduct = await _dataContext.Categories.FindAsync(Id);
+                if (existingProduct == null)
+                {
+                    return NotFound();
+                }
+
+                // 3. Cập nhật các thông tin cơ bản
+                existingProduct.Name = category.Name;
+                existingProduct.Description = category.Description;
+                existingProduct.Status = category.Status;
+                existingProduct.Slug = slug;
+
+                //_dataContext.update(category)
+
+                // 5. Lưu thay đổi vào Database
+                await _dataContext.SaveChangesAsync();
+
+                TempData["success"] = "Cập nhật danh mục thành công!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
+                return View(category); // Nên trả về View cùng dữ liệu cũ để người dùng sửa thay vì BadRequest text thô
+            }
+        }
+        #endregion
 
         public async Task<IActionResult> Delete(int Id)
         {
