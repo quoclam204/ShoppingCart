@@ -2,7 +2,7 @@
 @model CategoryModel
 
 @{
-    ViewData["title"] = "Edit Product";
+    ViewData["title"] = "Edit Category";
 }
 
 <h3>Sửa danh mục</h3>
@@ -37,7 +37,7 @@
     </form>
 
     <a asp-action="Index" class="btn btn-outline-primary">
-        <i class="bi bi-arrow-left"></i> Quay lại trang sản phẩm
+        <i class="bi bi-arrow-left"></i> Quay lại trang danh mục
     </a>
 
 </div>
@@ -46,4 +46,11 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Description', {
+            versionCheck: false
+        });
+    </script>
 }

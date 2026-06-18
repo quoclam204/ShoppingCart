@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Models;
 using ShoppingCart.Repository;
@@ -8,18 +6,18 @@ using ShoppingCart.Repository;
 namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class BrandController : Controller
     {
         private readonly DataContext _dataContext;
 
-        public CategoryController(DataContext context)
+        public BrandController(DataContext context)
         {
             _dataContext = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _dataContext.Categories.OrderByDescending(p => p.Id).ToListAsync());
+            return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
         }
 
         #region Create category
@@ -31,7 +29,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CategoryModel category)
+        public async Task<IActionResult> Create(BrandModel brand)
         {
 
             if (ModelState.IsValid)
@@ -40,22 +38,22 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 //TempData["success"] = "Thêm sản phẩm thành công!";
 
                 // tạo slug tự động từ Name
-                category.Slug = category.Name.ToLower().Replace(" ", "-");
+                brand.Slug = brand.Name.ToLower().Replace(" ", "-");
                 // ktra slug đã tồn tại trong database chưa
-                var slug = await _dataContext.Categories.Where(p => p.Slug == category.Slug).FirstOrDefaultAsync();
+                var slug = await _dataContext.Brands.Where(p => p.Slug == brand.Slug).FirstOrDefaultAsync();
 
                 if (slug != null)
                 {
-                    ModelState.AddModelError("Name", "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.");
+                    ModelState.AddModelError("Name", "Tên thương hiệu đã tồn tại. Vui lòng chọn tên khác.");
 
                     // Giữ lại dữ liệu người dùng đã nhập.
-                    return View(category);
+                    return View(brand);
                 }
 
-                _dataContext.Add(category);
+                _dataContext.Add(brand);
                 await _dataContext.SaveChangesAsync();
 
-                TempData["success"] = "Thêm danh mục thành công!";
+                TempData["success"] = "Thêm thương hiệu thành công!";
                 return RedirectToAction("Index");
 
             }
@@ -77,7 +75,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 string errorMessage = string.Join("\n", errors);
                 return BadRequest(errorMessage);
             }
-            return View(category);
+            return View(brand);
         }
         #endregion
 
@@ -85,70 +83,70 @@ namespace ShoppingCart.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int Id)
         {
-            CategoryModel category = await _dataContext.Categories.FindAsync(Id);
-            return View(category);
+            BrandModel brand = await _dataContext.Brands.FindAsync(Id);
+            return View(brand);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, CategoryModel category)
+        public async Task<IActionResult> Edit(int Id, BrandModel brand)
         {
             if (ModelState.IsValid)
             {
                 // 1. Tạo slug và kiểm tra trùng lặp
-                var slug = category.Name.ToLower().Replace(" ", "-");
-                var checkSlug = await _dataContext.Categories
+                var slug = brand.Name.ToLower().Replace(" ", "-");
+                var checkSlug = await _dataContext.Brands
                     .Where(p => p.Slug == slug && p.Id != Id)
                     .FirstOrDefaultAsync();
 
                 if (checkSlug != null)
                 {
-                    ModelState.AddModelError("Name", "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.");
-                    return View(category);
+                    ModelState.AddModelError("Name", "Tên thương hiệu đã tồn tại. Vui lòng chọn tên khác.");
+                    return View(brand);
                 }
 
                 // 2. Lấy sản phẩm hiện tại từ DB
-                var existingCategory = await _dataContext.Categories.FindAsync(Id);
-                if (existingCategory == null)
+                var existingBrand = await _dataContext.Brands.FindAsync(Id);
+                if (existingBrand == null)
                 {
                     return NotFound();
                 }
 
                 // 3. Cập nhật các thông tin cơ bản
-                existingCategory.Name = category.Name;
-                existingCategory.Description = category.Description;
-                existingCategory.Status = category.Status;
-                existingCategory.Slug = slug;
+                existingBrand.Name = brand.Name;
+                existingBrand.Description = brand.Description;
+                existingBrand.Status = brand.Status;
+                existingBrand.Slug = slug;
 
                 //_dataContext.update(category)
 
                 // 5. Lưu thay đổi vào Database
                 await _dataContext.SaveChangesAsync();
 
-                TempData["success"] = "Cập nhật danh mục thành công!";
+                TempData["success"] = "Cập nhật thương hiệu thành công!";
                 return RedirectToAction("Index");
             }
             else
             {
                 TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
-                return View(category); // Nên trả về View cùng dữ liệu cũ để người dùng sửa thay vì BadRequest text thô
+                return View(brand); // Nên trả về View cùng dữ liệu cũ để người dùng sửa thay vì BadRequest text thô
             }
         }
         #endregion
 
         public async Task<IActionResult> Delete(int Id)
         {
-            CategoryModel category = await _dataContext.Categories.FindAsync(Id);
+            BrandModel brand = await _dataContext.Brands.FindAsync(Id);
 
-            if (category == null)
+            if (brand == null)
             {
                 return NotFound();
             }
 
-            _dataContext.Categories.Remove(category);
+            _dataContext.Brands.Remove(brand);
             await _dataContext.SaveChangesAsync();
 
-            TempData["success"] = "Danh mục đã xóa.";
+            TempData["success"] = "Thương hiệu đã xóa.";
 
             return RedirectToAction("Index");
         }
