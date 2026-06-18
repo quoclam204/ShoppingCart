@@ -48,6 +48,7 @@
             <label>Hình ảnh</label>
             <input asp-for="ImageUpLoad" class="form-control" />
             <span asp-validation-for="ImageUpLoad" class="text-danger"></span>
+            <img id="imgpreview" class="pt-2"/>
         </div>
 
         <div class="form-group">
@@ -62,12 +63,20 @@
 
 </div>
 
+@* nạp JavaScript cho trang hiện tại. *@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        $("#ImageUpLoad").change(function() {
+            readURL(this);
+        })
+    </script>
+
     <script>
         CKEDITOR.replace('Description', {
             versionCheck: false
