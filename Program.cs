@@ -55,6 +55,20 @@ namespace ShoppingCart
                 pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
+            // Custom route category
+            app.MapControllerRoute(
+                name: "category",
+                pattern: "/category/{slug?}",
+                defaults: new {controller= "Category", action = "Index" }) // mặc đinh mới
+                .WithStaticAssets();
+
+            // Custom route brand
+            app.MapControllerRoute(
+                name: "brand",
+                pattern: "/brand/{slug?}",
+                defaults: new { controller = "Brand", action = "Index" })
+                .WithStaticAssets();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
