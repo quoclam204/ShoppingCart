@@ -30,6 +30,9 @@ namespace ShoppingCart
 
             var app = builder.Build();
 
+            // Khi xảy ra lỗi hệ thống tự chuyển hướng đến trang 404
+            app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
