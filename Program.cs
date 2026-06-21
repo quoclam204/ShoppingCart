@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Models;
 using ShoppingCart.Repository;
 using System.Runtime.InteropServices;
 
@@ -28,6 +30,35 @@ namespace ShoppingCart
                 optiosns.Cookie.IsEssential = true;
             });
 
+            #region Identity
+            builder.Services.AddIdentity<AppUserModel, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+            builder.Services.AddRazorPages();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings. -> khóa tài khoản
+                //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                //options.Lockout.MaxFailedAccessAttempts = 5;
+                //options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+
+                // Mỗi email chỉ được dùng cho 1 tài khoản duy nhất trong hệ thống.
+                options.User.RequireUniqueEmail = true;
+            });
+            #endregion
+
             var app = builder.Build();
 
             // Khi xảy ra lỗi hệ thống tự chuyển hướng đến trang 404
@@ -42,11 +73,16 @@ namespace ShoppingCart
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             // bộ nhớ tạm để lưu dữ liệu người dùng như: giỏ hàng, trạng thái đăng nhập
             app.UseSession();
 
+            // xử lý đăng nhập (xác thực) và phân quyền.
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
@@ -62,7 +98,7 @@ namespace ShoppingCart
             app.MapControllerRoute(
                 name: "category",
                 pattern: "/category/{slug?}",
-                defaults: new {controller= "Category", action = "Index" }) // mặc đinh mới
+                defaults: new { controller = "Category", action = "Index" }) // mặc đinh mới
                 .WithStaticAssets();
 
             // Custom route brand
