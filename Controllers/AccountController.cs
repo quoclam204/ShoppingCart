@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Models;
+using ShoppingCart.Models.ViewModels;
 
 namespace ShoppingCart.Controllers
 {
@@ -16,16 +17,33 @@ namespace ShoppingCart.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Index()
+        #region Đăng nhập tài khoản
+        [HttpGet]
+        public IActionResult Login(string returnUrl)
         {
-            return View();
+            // quay lại đúng trang người dùng đang truy cập trước đó.
+            return View(new LoginViewModel { ReturnUrl = returnUrl}); 
         }
-
-        public async Task<IActionResult> Login()
+                
+        public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
-            return View();
-        }
+            if(ModelState.IsValid)
+            {
+                Microsoft.AspNetCore.Identity.SignInResult result = 
+                    await _signInManager.PasswordSignInAsync(loginVM.Username, loginVM.Password, false, false);
 
+                if (result.Succeeded)
+                {
+                    TempData["success"] = "Đăng nhập thành công!";
+                    return Redirect(loginVM.ReturnUrl ?? "/"); 
+                }    
+                ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng!");
+            }    
+            return View(loginVM); // Quay về trang Login.cshtml với @model LoginViewModel
+        }
+        #endregion
+
+        #region Đăng ký tài khoản
         [HttpGet]
         public IActionResult Create()
         {
@@ -48,7 +66,7 @@ namespace ShoppingCart.Controllers
                 if (result.Succeeded)
                 {
                     TempData["success"] = "Tạo tài khoản thành công!";
-                    return Redirect("/account");
+                    return Redirect("/account/login"); // quay lại trang đăng nhập
                 }
                 foreach (IdentityError error in result.Errors)
                 {
@@ -58,5 +76,6 @@ namespace ShoppingCart.Controllers
             }    
             return View(user);
         }
+        #endregion
     }
 }

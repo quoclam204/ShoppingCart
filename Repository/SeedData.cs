@@ -7,6 +7,7 @@ namespace ShoppingCart.Repository
     {
         public static void SeedingData(DataContext _context)
         {
+            // -> time out SQL
             _context.Database.Migrate();
             if (!_context.Products.Any())
             {
