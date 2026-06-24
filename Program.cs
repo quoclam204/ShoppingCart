@@ -33,7 +33,7 @@ namespace ShoppingCart
             });
 
             #region Identity
-            builder.Services.AddIdentity<AppUserModel, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentity<AppUserModel, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
             builder.Services.AddRazorPages();
 

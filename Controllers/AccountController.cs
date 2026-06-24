@@ -56,12 +56,16 @@ namespace ShoppingCart.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Tạo đối tượng User khi người dùng đăng ký tài khoản
+                // Ko có password vì sẽ lưu mật khẩu vào database sẽ bị lộ
                 AppUserModel newUser = new AppUserModel
                 {
                     UserName = user.Username,
                     Email = user.Email
                 };
-                IdentityResult result = await _userManage.CreateAsync(newUser);
+
+                // Lưu User vào Database
+                IdentityResult result = await _userManage.CreateAsync(newUser, user.Password);
 
                 if (result.Succeeded)
                 {
