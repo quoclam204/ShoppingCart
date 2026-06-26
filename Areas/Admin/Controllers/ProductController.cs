@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Models;
@@ -7,6 +8,9 @@ using ShoppingCart.Repository;
 namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
+
+    // Phải đăng nhập được mới vô được trang Admin
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly DataContext _dataContext;

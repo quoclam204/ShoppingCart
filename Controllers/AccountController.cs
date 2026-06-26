@@ -81,5 +81,12 @@ namespace ShoppingCart.Controllers
             return View(user);
         }
         #endregion
+
+        // Đăng xuất tài khoản
+        public async Task<IActionResult> Logout(string returnUrl = "/")
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect(returnUrl);
+        }
     }
 }
