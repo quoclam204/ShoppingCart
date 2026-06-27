@@ -24,7 +24,8 @@ namespace ShoppingCart.Controllers
             // quay lại đúng trang người dùng đang truy cập trước đó.
             return View(new LoginViewModel { ReturnUrl = returnUrl}); 
         }
-                
+
+        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
             if(ModelState.IsValid)
