@@ -1,4 +1,6 @@
-﻿namespace ShoppingCart.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ShoppingCart.Models
 {
     public class OrderDetails
     {
@@ -7,6 +9,9 @@
         public string OrderCode { get; set; }
         public long ProductId { get; set; }
         public decimal Price { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 0;  
+
+        [ForeignKey("ProductId")]
+        public ProductModel Product { get; set; }
     }
 }
