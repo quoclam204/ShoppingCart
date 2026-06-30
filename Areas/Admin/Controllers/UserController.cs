@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShoppingCart.Models;
 using ShoppingCart.Repository;
 
@@ -29,6 +30,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
             return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
         }
 
+        #region Create User
         [HttpGet]
         [Route("Create")]
         public async Task<IActionResult> Create()
@@ -54,7 +56,11 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 }
                 else
                 {
-                    AddIdentityErrors(createUserResult);
+                    foreach (var error in createUserResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
                     return View(user);
                 }    
             }
@@ -83,13 +89,124 @@ namespace ShoppingCart.Areas.Admin.Controllers
             //return View(new AppUserModel());
             return View(user);
         }
+        #endregion
 
+        #region Edit User
+        [HttpGet]
+        [Route("Edit")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            // Kiểm tra xem Id có null hoặc rỗng không
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            // Tìm user dựa trên Id vừa tìm thấy
+            var user = await _userManager.FindByIdAsync(id);
+
+            // Kiểm tra user có tồn tại không
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            var roles = await _roleManager.Roles.ToListAsync();
+            ViewBag.Roles = new SelectList(roles, "Id", "Name");
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Edit")]
+        public async Task<IActionResult> Edit(string id, AppUserModel user)
+        { 
+            var existingUser = await _userManager.FindByIdAsync(id); // Lấy user dựa vào id
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }    
+
+            if (ModelState.IsValid)
+            {
+                // Gán User hiện tại = User được gửi từ form
+                existingUser.UserName = user.UserName;
+                existingUser.Email = user.Email;
+                existingUser.PhoneNumber = user.PhoneNumber;
+                existingUser.RoleId = user.RoleId;
+
+                // Thực hiện update user
+                var updateUserResult = await _userManager.UpdateAsync(existingUser);
+                if (updateUserResult.Succeeded)
+                {
+                    return RedirectToAction("Index", "Usrer");
+                }
+                else
+                {
+                    AddIdentityErrors(updateUserResult);
+                    return View(existingUser);
+                }    
+            }
+
+            // Lấy danh sách Role để hiển thị lại Dropdown
+            var roles = await _roleManager.Roles.ToListAsync();
+            ViewBag.Roles = new SelectList(roles, "Id", "Name");
+
+            // Thông báo dữ liệu nhập không hợp lệ
+            TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
+
+            // Lấy tất cả thông báo lỗi trong ModelState (nếu cần sử dụng)
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            string errorMessage = string.Join("\n", errors);
+
+            // Trả về lại trang Edit để người dùng sửa thông tin
+            return View(existingUser);
+        }
+
+        // đưa các lỗi của Identity vào ModelState
         private void AddIdentityErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+        }
+
+        #endregion
+
+        [HttpPost]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(string Id)
+        {
+            // Kiểm tra xem Id có null hoặc rỗng không
+            if (string.IsNullOrEmpty(Id))
+            {
+                return NotFound();
+            }
+
+            // Tìm user dựa trên Id vừa tìm thấy
+            var user = await _userManager.FindByIdAsync(Id);
+
+            // Kiểm tra user có tồn tại không
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            // Xóa User
+            var deleteUserResult = await _userManager.DeleteAsync(user);
+
+            // Nếu không thành công
+            if (!deleteUserResult.Succeeded)
+            {
+                return View("Error");
+            }
+
+            TempData["success"] = "User đã xóa thành công"; 
+            return RedirectToAction("Index");
         }
     }
 }
