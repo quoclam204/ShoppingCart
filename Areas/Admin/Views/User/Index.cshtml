@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppUserModel>
+﻿@* @model IEnumerable<AppUserModel> *@
 
 @{
     ViewData["Title"] = "List User";
@@ -11,28 +11,25 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">User Name</th>
             <th scope="col">Email</th>
-            <th scope="col">Password Hash</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Role</th>       
         </tr>
     </thead>
     <tbody> 
-        @foreach (var user in Model)
+        @foreach (var usersWithRoles in Model)
         {
             <tr>
-                <th scope="row">@user.Id</th>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <td>@user.PasswordHash</td>
-                <td>@user.PhoneNumber</td>
-                <td></td>
+                <td>@usersWithRoles.User.UserName</td>
+                <td>@usersWithRoles.User.Email</td>
+                <td>@usersWithRoles.User.PhoneNumber</td>
+
+                <td>@usersWithRoles.RoleName</td>
 
                 <td>
-                    <a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="User" asp-route-Id="@user.Id">Sửa</a>
-                    <a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="User" asp-route-Id="@user.Id">Xóa</a>
+                    <a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="User" asp-route-Id="@usersWithRoles.User.Id">Sửa</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="User" asp-route-Id="@usersWithRoles.User.Id">Xóa</a>
                 </td>
             </tr>
         }

@@ -14,20 +14,29 @@ namespace ShoppingCart.Areas.Admin.Controllers
     //[Authorize]
     public class UserController : Controller
     {
+        private readonly DataContext _datdaContext;
+
         private readonly UserManager<AppUserModel> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserController(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(DataContext dataContext, UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _datdaContext = dataContext;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        [HttpGet]
+        [HttpGet]           
         [Route("Index")]
         public async Task <IActionResult> Index()
         {
-            return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+            var usersWithRoles = await (from u in _datdaContext.Users
+                                        join ur in _datdaContext.UserRoles on u.Id equals ur.UserId
+                                        join r in _datdaContext.Roles on ur.RoleId equals r.Id
+                                        select new { User = u, RoleName = r.Name }).ToListAsync();
+
+            return View(usersWithRoles);
+            //return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
         }
 
         #region Create User
@@ -48,10 +57,26 @@ namespace ShoppingCart.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Tạo User
                 var createUserResult = await _userManager.CreateAsync(user, user.PasswordHash);
 
                 if (createUserResult.Succeeded)
                 {
+                    var createUser = await _userManager.FindByEmailAsync(user.Email); // Tìm user theo Email
+                    var userId = createUser.Id; // Lấy Id của user vừa tạo
+                    var role = await _roleManager.FindByIdAsync(user.RoleId); // Tìm role theo Id
+
+                    // Thực hiện gán quyền
+                    var addToRoleResult = await _userManager.AddToRoleAsync(createUser, role.Name);
+                    if (!addToRoleResult.Succeeded)
+                    {
+                        foreach (var error in addToRoleResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return View(user);
+                    }
+
                     return RedirectToAction("Index", "User");
                 }
                 else
@@ -111,7 +136,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 return NotFound();
             }
 
-
+            // Lấy thông tin của Dropdown
             var roles = await _roleManager.Roles.ToListAsync();
             ViewBag.Roles = new SelectList(roles, "Id", "Name");
 
@@ -174,7 +199,6 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
-
         #endregion
 
         [HttpPost]

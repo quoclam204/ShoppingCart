@@ -7,7 +7,8 @@ using ShoppingCart.Repository;
 namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Route("Admin/[controller]")]
+    //[Authorize(Roles = "Publisher, Author, Admin")]
     public class BrandController : Controller
     {
         private readonly DataContext _dataContext;
@@ -17,6 +18,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
             _dataContext = context;
         }
 
+        [Route("Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
@@ -24,12 +26,14 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         #region Create category
         [HttpGet]
+        [Route("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BrandModel brand)
         {
@@ -83,6 +87,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         #region Edit category
         [HttpGet]
+        [Route("Edit")]
         public async Task<IActionResult> Edit(int Id)
         {
             BrandModel brand = await _dataContext.Brands.FindAsync(Id);
@@ -90,6 +95,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, BrandModel brand)
         {
@@ -136,6 +142,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
         }
         #endregion
 
+        [Route("Delete")]
         public async Task<IActionResult> Delete(int Id)
         {
             BrandModel brand = await _dataContext.Brands.FindAsync(Id);
