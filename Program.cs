@@ -33,6 +33,7 @@ namespace ShoppingCart
             });
 
             #region Identity
+            // Khai báo Identity
             builder.Services.AddIdentity<AppUserModel, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
             builder.Services.AddRazorPages();
@@ -84,8 +85,8 @@ namespace ShoppingCart
             app.UseSession();
 
             // xử lý đăng nhập (xác thực) và phân quyền.
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication(); // Đăng nhập trước 
+            app.UseAuthorization(); // Sau đó kiểm tra quyền
 
             app.MapStaticAssets();
 

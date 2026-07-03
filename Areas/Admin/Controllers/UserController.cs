@@ -11,7 +11,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
-    //[Authorize]
+    //[Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly DataContext _datdaContext;
@@ -30,13 +30,20 @@ namespace ShoppingCart.Areas.Admin.Controllers
         [Route("Index")]
         public async Task <IActionResult> Index()
         {
-            var usersWithRoles = await (from u in _datdaContext.Users
+            // Hiển thị Role theo User lên View
+            // lấy được cả thông tin User và tên Role, rất phù hợp để hiển thị ở trang quản lý người dùng.
+            var usersWithRoles = await (from u in _datdaContext.Users // Bảng Users
+
+                                        // Ghép User với bảng trung gian AspNetUserRoles.
                                         join ur in _datdaContext.UserRoles on u.Id equals ur.UserId
                                         join r in _datdaContext.Roles on ur.RoleId equals r.Id
+
                                         select new { User = u, RoleName = r.Name }).ToListAsync();
 
             return View(usersWithRoles);
-            //return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+
+            /* chỉ lấy được danh sách User, không có thông tin Role.
+            return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync()); */
         }
 
         #region Create User
@@ -62,11 +69,10 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
                 if (createUserResult.Succeeded)
                 {
-                    var createUser = await _userManager.FindByEmailAsync(user.Email); // Tìm user theo Email
-                    var userId = createUser.Id; // Lấy Id của user vừa tạo
-                    var role = await _roleManager.FindByIdAsync(user.RoleId); // Tìm role theo Id
+                    var createUser = await _userManager.FindByEmailAsync(user.Email); // Tìm tk user(vừa tạo) theo Email
+                    var role = await _roleManager.FindByIdAsync(user.RoleId); // Tìm role theo RoleId
 
-                    // Thực hiện gán quyền
+                    // Thực hiện gán role cho user
                     var addToRoleResult = await _userManager.AddToRoleAsync(createUser, role.Name);
                     if (!addToRoleResult.Succeeded)
                     {
@@ -81,15 +87,14 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 }
                 else
                 {
-                    foreach (var error in createUserResult.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    // Thêm các lỗi từ IdentityResult vào ModelState để hiển thị trên View
+                    AddIdentityErrors(createUserResult);
 
+                    // Hiển thị lại trang tạo tài khoản và giữ nguyên dữ liệu người dùng nhập
                     return View(user);
                 }    
             }
-            else
+            else // Nếu tạo User thất bại
             {
                 TempData["error"] = "Thông tin bạn nhập chưa hợp lệ. Vui lòng kiểm tra lại.";
 
@@ -107,12 +112,6 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 string errorMessage = string.Join("\n", errors);
                 return BadRequest(errorMessage);
             }
-
-            var roles = await _roleManager.Roles.ToListAsync();
-            ViewBag.Roles = new SelectList(roles, "Id", "Name");
-
-            //return View(new AppUserModel());
-            return View(user);
         }
         #endregion
 
@@ -144,8 +143,8 @@ namespace ShoppingCart.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("Edit")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, AppUserModel user)
         { 
             var existingUser = await _userManager.FindByIdAsync(id); // Lấy user dựa vào id
@@ -167,7 +166,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 var updateUserResult = await _userManager.UpdateAsync(existingUser);
                 if (updateUserResult.Succeeded)
                 {
-                    return RedirectToAction("Index", "Usrer");
+                    return RedirectToAction("Index", "User");
                 }
                 else
                 {
@@ -189,15 +188,6 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
             // Trả về lại trang Edit để người dùng sửa thông tin
             return View(existingUser);
-        }
-
-        // đưa các lỗi của Identity vào ModelState
-        private void AddIdentityErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
         }
         #endregion
 
@@ -231,6 +221,15 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
             TempData["success"] = "User đã xóa thành công"; 
             return RedirectToAction("Index");
+        }
+
+        // đưa các lỗi của Identity vào ModelState (Hàm hiển thị lỗi lên View)
+        private void AddIdentityErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
     }
 }

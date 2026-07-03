@@ -9,8 +9,8 @@ namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
 
-    // Phải đăng nhập được mới vô được trang Admin
-    [Authorize]
+    // Phải đăng nhập bằng tài khoản Admin được mới vô được trang Admin Product
+    //[Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly DataContext _dataContext;
