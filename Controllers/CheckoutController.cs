@@ -3,15 +3,19 @@ using ShoppingCart.Models;
 using ShoppingCart.Repository;
 using System.Security.Claims;
 
+using ShoppingCart.Areas.Admin.Repository;
+
 namespace ShoppingCart.Controllers
 {
     public class CheckoutController : Controller
     {
         private readonly DataContext _dataContext;
+        private readonly IEmailSender _emailSender;
 
-        public CheckoutController(DataContext context)
+        public CheckoutController(DataContext context, IEmailSender emailSender)
         {
             _dataContext = context;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -58,7 +62,14 @@ namespace ShoppingCart.Controllers
                     _dataContext.SaveChanges();
                 }    
 
-                HttpContext.Session.Remove("Cart"); 
+                HttpContext.Session.Remove("Cart");
+
+                // Gửi email thông báo đặt hàng thành công.
+                var receiver = userEmail;
+                var subject = "Đặt hàng thành công!";
+                var massage = $"Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi. Mã đơn hàng của bạn là: {oderCode}. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.";
+                await _emailSender.SendEmailAsync(receiver, subject, massage);
+
                 TempData["Success"] = "Đặt hàng thành công!";
                 return RedirectToAction("Index", "Cart");
             }

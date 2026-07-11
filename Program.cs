@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Areas.Admin.Repository;
 using ShoppingCart.Models;
 using ShoppingCart.Repository;
 using System.Runtime.InteropServices;
@@ -19,6 +20,9 @@ namespace ShoppingCart
             //});
             builder.Services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectedDb")));
+
+            // Add Email Sender
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
