@@ -9,7 +9,8 @@ using ShoppingCart.Repository;
 namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Route("Admin/[controller]")]
+    //[Authorize(Roles = "Publisher, Author")]
     public class CategoryController : Controller
     {
         private readonly DataContext _dataContext;
@@ -19,9 +20,32 @@ namespace ShoppingCart.Areas.Admin.Controllers
             _dataContext = context;
         }
 
-        public async Task<IActionResult> Index()
+        [Route("Index")]
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _dataContext.Categories.OrderByDescending(p => p.Id).ToListAsync());
+            // Lấy ra danh sách sản phẩm trong csdl
+            List<CategoryModel> category = _dataContext.Categories.ToList();
+
+            const int pageSize = 10; // 10 sản phẩm trên 1 trang
+
+            if (page < 1)
+            {
+                page = 1;
+            }    
+
+            int recsCount = category.Count(); // đếm sô lượng sản phẩm
+
+            var pager = new Paginate(recsCount, page, pageSize);
+
+            int recSkip = (page - 1) * pageSize;
+            var data = category.Skip(recSkip).Take(pager.PageSize).ToList();
+
+            // đưa đối tượng pager từ Controller sang View để View
+            ViewBag.Pager = pager;
+
+            return View(data);
+
+            //return View(await _dataContext.Categories.OrderByDescending(p => p.Id).ToListAsync());
         }
 
         #region Create category

@@ -2,6 +2,16 @@
 
 @{
     ViewData["Title"] = "Order Listed";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 <h3>Danh sách đơn hàng</h3>
@@ -44,3 +54,4 @@
         }
     </tbody>
 </table>
+<partial name="_paging" model="@pager" />

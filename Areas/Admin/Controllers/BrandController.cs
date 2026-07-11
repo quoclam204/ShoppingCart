@@ -19,9 +19,29 @@ namespace ShoppingCart.Areas.Admin.Controllers
         }
 
         [Route("Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
+            // Lấy ra danh sách sản phẩm trong csdl
+            List<BrandModel> brand = _dataContext.Brands.ToList();
+
+            const int pageSize = 10; // 10 sản phẩm trên 1 trang
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            int recsCount = brand.Count(); // đếm sô lượng sản phẩm
+
+            var pager = new Paginate(recsCount, page, pageSize);
+
+            int recSkip = (page - 1) * pageSize;
+            var data = brand.Skip(recSkip).Take(pager.PageSize).ToList();
+
+            // đưa đối tượng pager từ Controller sang View để View
+            ViewBag.Pager = pager;
+
+            return View(data);
         }
 
         #region Create category

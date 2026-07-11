@@ -2,6 +2,16 @@
 
 @{
     ViewData["Title"] = "Category Listed";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 <h3>Danh sách danh mục của sản phẩm</h3>
@@ -46,3 +56,4 @@
         }
     </tbody>
 </table>
+<partial name="_paging" model="@pager" />
