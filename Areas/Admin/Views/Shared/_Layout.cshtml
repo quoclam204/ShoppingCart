@@ -8,6 +8,9 @@
 	<title>@ViewData["title"] - Admin Areas</title>
 	<link href="~/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+
+	@* Nạp file CSS *@
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.min.css" rel="stylesheet"> 
 	<link href="~/css/prettyPhoto.css" rel="stylesheet">
 	<link href="~/css/price-range.css" rel="stylesheet">
 	<link href="~/css/animate.css" rel="stylesheet">
@@ -109,6 +112,26 @@
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
 	<script src="~/backend/js/site.js"></script>
+
+	@* Nạp file JavaScript *@
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+
+	@* Hiển thị thông báo *@
+	<script>
+		$(function(){
+            var message = '@TempData["success"]';
+			if (message	!= '')
+			{
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: message,
+					showConfirmButton: false,
+					timer: 1500
+				});
+            }
+        });
+	</script>
 
 	@* chèn các đoạn JavaScript (script) từ View con vào trang *@
     @await RenderSectionAsync("Scripts", required: false)

@@ -8,6 +8,7 @@
 	<title>Home | E-Shopper</title>
 	<link href="~/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.min.css" rel="stylesheet">
 	<link href="~/css/prettyPhoto.css" rel="stylesheet">
 	<link href="~/css/price-range.css" rel="stylesheet">
 	<link href="~/css/animate.css" rel="stylesheet">
@@ -381,6 +382,24 @@
 	<script src="~/js/price-range.js"></script>
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+
+	<script>
+		$(function(){
+			var message = '@TempData["success"]';
+			if (message	!= '')
+			{
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: message,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		});
+	</script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>

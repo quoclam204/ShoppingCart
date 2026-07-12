@@ -11,6 +11,8 @@ namespace ShoppingCart.Areas.Admin.Repository
             {
                 EnableSsl = true, // bật bảo mật
                 UseDefaultCredentials = false,
+
+                // Khai báo tài khoản Gmail dùng để gửi email.
                 Credentials = new NetworkCredential("nguyenlequoclam@gmail.com", "rjpiykevxogjtbxh")
             };
 
