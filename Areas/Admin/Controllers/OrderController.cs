@@ -7,6 +7,7 @@ using ShoppingCart.Repository;
 namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]")]
     [Authorize]
     public class OrderController : Controller
     {

@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Order Details";
+
+    decimal subtotal = 0; // thành tiền của sản phẩm đó (tổng phụ)
+    decimal total = 0; // tổng tiền cuối cùng (của tất cả sản phẩm)
 }
 
 <h3>Chi tiết đơn hàng</h3>
@@ -20,6 +23,9 @@
     <tbody>
         @foreach (var item in Model)
         {
+            subtotal = item.Quantity * item.Price;
+            total += subtotal;
+
             <tr>
                 <th scope="row">@item.Id</th>
                 <td>@item.UserName</td>
@@ -27,8 +33,20 @@
                 <td>@item.OrderCode</td>
                 <td>@item.Price</td>
                 <td>@item.Quantity</td>
+                <td>@subtotal.ToString("C")</td>
                 
             </tr>
         }
+
+        <tr>
+            <th colspan="5">Total:</th>
+            <td>@total.ToString("C")</td>
+            <td>
+                <select class="form-control select-update-order">
+                    <option value="1">Đơn hàng mới</option>
+                    <option value="0">Đã xử lý</option>
+                </select>
+            </td>
+        </tr>
     </tbody>
 </table>

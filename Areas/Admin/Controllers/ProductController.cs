@@ -8,7 +8,7 @@ using ShoppingCart.Repository;
 namespace ShoppingCart.Areas.Admin.Controllers
 {
     [Area("Admin")]
-
+    [Route("Admin/[controller]")]
     // Phải đăng nhập bằng tài khoản Admin được mới vô được trang Admin Product
     //[Authorize(Roles = "Admin")]
     public class ProductController : Controller
@@ -24,6 +24,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        [Route("Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _dataContext.Products.OrderByDescending(p => p.Id).
