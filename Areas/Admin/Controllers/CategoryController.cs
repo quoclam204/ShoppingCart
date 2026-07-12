@@ -50,12 +50,14 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         #region Create category
         [HttpGet]
+        [Route("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryModel category)
         {
@@ -109,6 +111,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         #region Edit category
         [HttpGet]
+        [Route("Edit")]
         public async Task<IActionResult> Edit(int Id)
         {
             CategoryModel category = await _dataContext.Categories.FindAsync(Id);
@@ -116,6 +119,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, CategoryModel category)
         {

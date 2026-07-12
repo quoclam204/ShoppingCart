@@ -12,12 +12,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Tên khách hàng</th>
             <th scope="col">Sản phẩm</th>
             <th scope="col">Mã đơn hàng</th>
             <th scope="col">Giá</th>
             <th scope="col">Số lượng</th>
+            <th scope="col">Subtotal</th>
         </tr>
     </thead>
     <tbody>
@@ -27,14 +27,14 @@
             total += subtotal;
 
             <tr>
-                <th scope="row">@item.Id</th>
+                <input type="hidden" asp-for="@item.OrderCode" class="getId" />
                 <td>@item.UserName</td>
-                <td>@item.Product</td>
+                <td>@item.Product.Name</td>
                 <td>@item.OrderCode</td>
                 <td>@item.Price</td>
                 <td>@item.Quantity</td>
                 <td>@subtotal.ToString("C")</td>
-                
+
             </tr>
         }
 
@@ -50,3 +50,53 @@
         </tr>
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('.select-update-order').change(function () {
+
+                var status = $(this).val();
+                var ordercode = $('.getId').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateOrder")",
+                    data: {
+                        status: status,
+                        ordercode: ordercode
+                    }, // Send data to the server
+
+                    success: function (result) {
+                        // Handle successful update
+                        if (result.success) {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Cập nhật đơn hàng thành công.",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Cập nhật đơn hàng thất bại!" + result.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    },
+
+                    error: function (req, status, error) {
+                        console.error("Error updating order:", error);
+                    }
+                });
+
+            });
+
+        });
+    </script>
+}

@@ -47,8 +47,73 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         public async Task<IActionResult> ViewOrder(string ordercode)
         {
-            var detailsOrder = await _dataContext.OrderDetails.Include(od => od.Product).Where(od => od.OrderCode == ordercode) .ToListAsync();
+            var detailsOrder = await _dataContext.OrderDetails.Include(od => od.Product).Where(od => od.OrderCode == ordercode).ToListAsync();
             return View(detailsOrder);
+        }
+
+        [HttpGet]
+        [Route("UpdateOrder")]
+        public async Task<IActionResult> UpdateOrder(string ordercode)
+        {
+            var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
+        }
+
+        [HttpPost]
+        [Route("UpdateOrder")]
+        public async Task<IActionResult> UpdateOrder(string ordercode, int status)
+        {
+            var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Thực hiện update trạng thái
+            order.Status = status;
+
+            try
+            {
+                await _dataContext.SaveChangesAsync();
+                return Ok(new { success = true, message = "Cập nhật trạng thái đơn hàng thành công." });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) if needed
+                return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng." });
+            }
+        }
+
+        [HttpGet]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(string ordercode)
+        {
+            var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            // Xóa các chi tiết đơn hàng liên quan trước
+            var orderDetails = _dataContext.OrderDetails.Where(od => od.OrderCode == ordercode);
+            _dataContext.OrderDetails.RemoveRange(orderDetails);
+            // Xóa đơn hàng
+            _dataContext.Orders.Remove(order);
+            try
+            {
+                await _dataContext.SaveChangesAsync();
+                TempData["success"] = "Xóa đơn hàng thành công.";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) if needed
+                return StatusCode(500, "Đã xảy ra lỗi khi xóa đơn hàng.");
+            }
         }
     }
 }

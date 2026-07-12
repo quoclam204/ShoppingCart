@@ -34,6 +34,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
         // Thêm sản phẩm
         // GET: Hiển thị form
         [HttpGet]
+        [Route("Create")]
         public IActionResult Create()
         {
             // lấy dữ liệu từ server hiển thị lên view
@@ -45,6 +46,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         // POST: Nhận dữ liệu + lưu DB
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductModel product)
         {
@@ -114,6 +116,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         // Sửa sản phẩm
         [HttpGet]
+        [Route("Edit")]
         public async Task<IActionResult> Edit(int Id)
         {
             ProductModel product = await _dataContext.Products.FindAsync(Id);
@@ -124,6 +127,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, ProductModel product)
         {
@@ -209,6 +213,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
             }
         }
 
+        [Route("Delete")]
         public async Task<IActionResult> Delete(int Id)
         {
             ProductModel product = await _dataContext.Products.FindAsync(Id);
