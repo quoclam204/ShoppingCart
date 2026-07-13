@@ -51,19 +51,23 @@
     </tbody>
 </table>
 
+
+@* Cập nhật trang thái đơn hàng *@
 @section Scripts {
     <script>
         $(document).ready(function () {
 
+            // Bắt sự kiện thay đổi của Select (code bên dưới thưc hiện khi ấn vào select có class .select-update-order)
             $('.select-update-order').change(function () {
 
-                var status = $(this).val();
-                var ordercode = $('.getId').val();
+                var status = $(this).val(); // trạng thái mới
+                var ordercode = $('.getId').val(); // mã đơn hàng
 
+                // Gửi Ajax request đến controller để cập nhật trạng thái đơn hàng
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("UpdateOrder")",
-                    data: {
+                    url: "@Url.Action("UpdateOrder")", // Gửi tới Action
+                    data: { // gửi dữ liệu khi người dùng thay đổi từ view và đến controller (UpdateOrder)
                         status: status,
                         ordercode: ordercode
                     }, // Send data to the server
@@ -90,6 +94,7 @@
                         }
                     },
 
+                    // Nếu lỗi Ajax
                     error: function (req, status, error) {
                         console.error("Error updating order:", error);
                     }
