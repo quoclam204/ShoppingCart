@@ -36,6 +36,7 @@ namespace ShoppingCart.Controllers
 
 
         // thêm sản phẩm vào giỏ hàng
+        [HttpPost]
         public async Task<IActionResult> AddCartProduct(int Id)
         {
             // Lấy sản phẩm từ database
@@ -61,7 +62,8 @@ namespace ShoppingCart.Controllers
             // Cập nhật giỏ hàng vào bộ nhớ tạm của user
             HttpContext.Session.SetJson("Cart", cart);
 
-            TempData["success"] = "Thêm sản phẩm vào giỏ hàng thành công!";
+            //TempData["success"] = "Thêm sản phẩm vào giỏ hàng thành công!";
+            // coment vì lỗi hiển thị lại thông báo khi sử dung ajax (khi ấn vào nút quay lại trang)
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
