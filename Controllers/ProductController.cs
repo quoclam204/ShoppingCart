@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Repository;
 
 namespace ShoppingCart.Controllers
@@ -25,6 +26,18 @@ namespace ShoppingCart.Controllers
             var productsById = _dataContext.Products.Where(p => p.Id == Id).FirstOrDefault();
 
             return View(productsById);
+        }
+
+        public async Task<IActionResult> Search(string searchTerm)
+        {
+            var products = await _dataContext.Products
+                .Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm))
+                .ToListAsync();
+
+            // Hiển thị từ khóa đã tìm kiếm lên view
+            ViewBag.Keyword = searchTerm;
+
+            return View(products);
         }
     }
 }
