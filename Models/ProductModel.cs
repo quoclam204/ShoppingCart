@@ -36,5 +36,7 @@ namespace ShoppingCart.Models
         [NotMapped]
         [FileExtension]
         public IFormFile? ImageUpLoad { get; set; }
+
+        public RatingModel Ratings { get; set; }
     }
 }
