@@ -16,6 +16,5 @@ namespace ShoppingCart.Models
         public string Slug { get; set; }
 
         public int Status { get; set; }
-
     }
 }
