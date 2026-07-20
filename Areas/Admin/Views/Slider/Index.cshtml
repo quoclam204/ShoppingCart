@@ -36,7 +36,7 @@
                 <th scope="row">@item.Id</th>
                 <td>@item.Name</td>
                 <td>@Html.Raw(item.Description)</td>
-                <td>@item.Image</td>
+                <td><img src="~/media/sliders/@item.Image" width="400px" height="200px" /></td>
 
                 <td>
                     @if (@item.Status == 1)

@@ -213,6 +213,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
         [Route("Delete")]
         public async Task<IActionResult> Delete(int Id)
         {
