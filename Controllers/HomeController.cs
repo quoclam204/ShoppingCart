@@ -20,6 +20,11 @@ namespace ShoppingCart.Controllers
         public IActionResult Index()
         {
             var products = _dataContext.Products.Include("Category").Include("Brand").ToList();  
+
+            // tìm slider có status = 1 thì mới hiện thị
+            var sliders = _dataContext.Sliders.Where(s => s.Status == 1).ToList();
+            ViewBag.Sliders = sliders;
+
             return View(products);
         }
 

@@ -138,7 +138,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                     await slider.ImageUpLoad.CopyToAsync(fs);
                     fs.Close();
 
-                    // lưu tên ảnh vào database
+                    // Xóa ảnh cũ và lưu ảnh mới (nếu có)
                     sliderExisting.Image = imageName;
                 }
 
