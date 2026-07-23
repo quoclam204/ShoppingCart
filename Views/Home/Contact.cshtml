@@ -1,0 +1,91 @@
+﻿@model ContactModel
+
+<div class="row">
+
+    <!-- Bản đồ -->
+    <div class="col-md-7">
+        <div class="text-center" style="margin-bottom:20px;">
+            <img src="~/media/logo/@Model.LogoImg"
+                 width="120"
+                 class="img-responsive"
+                 style="margin:0 auto;" />
+        </div>
+
+        <div style="margin-bottom:20px;">
+            @Html.Raw(Model.Map)
+        </div>
+
+        <div class="well">
+            <h3>Giới thiệu</h3>
+            <hr />
+            @Html.Raw(Model.Description)
+        </div>
+    </div>
+
+    <!-- Thông tin liên hệ -->
+    <div class="col-md-5">
+        <div class="well">
+
+            <h3>Thông tin liên hệ</h3>
+            <hr />
+
+            <p>
+                <strong>Tên cửa hàng:</strong><br />
+                @Model.Name
+            </p>
+
+            <p>
+                <strong>Email:</strong><br />
+                @Model.Email
+            </p>
+
+            <p>
+                <strong>Hotline:</strong><br />
+                @Model.Phone
+            </p>
+
+            <hr />
+
+            <h4>Giờ làm việc</h4>
+
+            <p>Thứ Hai - Thứ Sáu: <strong>08:00 - 18:00</strong></p>
+            <p>Thứ Bảy: <strong>08:00 - 17:00</strong></p>
+            <p>Chủ Nhật: <strong>Nghỉ</strong></p>
+
+        </div>
+    </div>
+
+</div>
+
+<hr style="margin:40px 0;" />
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h3>Tại sao chọn chúng tôi?</h3>
+
+        <p>
+            Chúng tôi luôn mang đến những sản phẩm chất lượng, giá cả hợp lý
+            cùng dịch vụ chăm sóc khách hàng tận tâm.
+        </p>
+
+        <p>
+            Với phương châm <strong>"Uy tín - Chất lượng - Hài lòng khách hàng"</strong>,
+            chúng tôi luôn nỗ lực để mang đến trải nghiệm mua sắm tốt nhất.
+        </p>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Hỗ trợ khách hàng</h3>
+
+        <p><strong>Email:</strong> @Model.Email</p>
+
+        <p><strong>Hotline:</strong> @Model.Phone</p>
+
+        <p>
+            Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ với chúng tôi
+            qua Email hoặc Hotline. Đội ngũ hỗ trợ sẽ phản hồi trong thời gian sớm nhất.
+        </p>
+    </div>
+
+</div>

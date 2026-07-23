@@ -1,0 +1,80 @@
+﻿@model ContactModel
+
+<style>
+    .footer-logo {
+        max-width: 120px;
+        margin-top: 20px; /* Đẩy logo xuống */
+        margin-bottom: 15px;
+    }
+
+    .footer-company p {
+        line-height: 24px;
+        text-align: justify;
+    }
+
+    .contact-box,
+    .support-box {
+        padding: 10px 20px;
+    }
+
+        .contact-box h3,
+        .support-box h3 {
+            margin-bottom: 20px;
+            color: #FE980F;
+            font-weight: bold;
+        }
+
+        .contact-box p,
+        .support-box p {
+            font-size: 15px;
+            line-height: 24px;
+            margin-bottom: 12px;
+        }
+</style>
+
+<div class="row">
+
+    <!-- Logo -->
+    <div class="col-sm-4">
+        <div class="footer-company text-center">
+            <img src="~/media/logo/@Model.LogoImg"
+                 class="footer-logo img-responsive"
+                 style="margin-left:auto; margin-right:auto;" />
+
+            <p>
+                @Html.Raw(Model.Description)
+            </p>
+        </div>
+    </div>
+
+    <!-- Thông tin liên hệ -->
+    <div class="col-sm-4">
+        <div class="contact-box">
+            <h3>Thông tin liên hệ</h3>
+
+            <p><strong>Tên cửa hàng:</strong> @Model.Name</p>
+
+            <p><strong>Email:</strong> @Model.Email</p>
+
+            <p><strong>Hotline:</strong> @Model.Phone</p>
+        </div>
+    </div>
+
+    <!-- Hỗ trợ khách hàng -->
+    <div class="col-sm-4">
+        <div class="support-box">
+            <h3>Hỗ trợ khách hàng</h3>
+
+            <p>
+                Chúng tôi luôn cam kết mang đến những sản phẩm chất lượng
+                cùng dịch vụ chăm sóc khách hàng tận tâm.
+            </p>
+
+            <p>
+                Nếu bạn có bất kỳ thắc mắc hoặc góp ý nào, vui lòng liên hệ
+                với chúng tôi qua Email hoặc Hotline để được hỗ trợ nhanh nhất.
+            </p>
+        </div>
+    </div>
+
+</div>

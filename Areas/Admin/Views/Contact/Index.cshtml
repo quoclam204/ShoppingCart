@@ -1,0 +1,40 @@
+﻿@* Kết nối với ProductController *@
+@* View này nhận một danh sách nhiều sản phẩm *@
+@model IEnumerable<ContactModel>
+
+@{
+    ViewData["Title"] = "Contact Info";
+}
+
+<h3>Danh sách liên hệ</h3>
+
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th scope="col">Tên website</th>
+            <th scope="col">Bản đồ</th>
+            <th scope="col">Email</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Logo</th>
+            <th scope="col">Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@Html.Raw(item.Map)</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@Html.Raw(item.Description)</td>
+                <td><img src="~/media/logo/@item.LogoImg" width="120px" height="120px" /></td>
+
+                <td>
+                    <a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="Contact">Sửa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

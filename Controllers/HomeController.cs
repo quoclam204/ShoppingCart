@@ -33,6 +33,13 @@ namespace ShoppingCart.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Contact()
+        {
+            var contact = await _dataContext.Contacts.FirstOrDefaultAsync();
+
+            return View(contact);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int statusCode)
         {
