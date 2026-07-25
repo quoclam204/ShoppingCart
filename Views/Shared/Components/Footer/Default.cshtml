@@ -30,16 +30,30 @@
             line-height: 24px;
             margin-bottom: 12px;
         }
+
+    /* footer không bị nhảy lên */
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #footer {
+        margin-top: auto;
+    }
 </style>
 
 <div class="row">
 
     <!-- Logo -->
     <div class="col-sm-4">
-        <div class="footer-company text-center">
+        <div class="footer-company">
             <img src="~/media/logo/@Model.LogoImg"
-                 class="footer-logo img-responsive"
-                 style="margin-left:auto; margin-right:auto;" />
+                 class="footer-logo img-responsive" />
 
             <p>
                 @Html.Raw(Model.Description)
