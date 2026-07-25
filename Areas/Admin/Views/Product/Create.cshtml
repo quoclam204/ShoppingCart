@@ -18,7 +18,14 @@
 
         <div class="form-group">
             <label>Giá</label>
-            <input asp-for="Price" class="form-control" />
+
+            <!-- Ô nhập giá -->
+            <input asp-for="Price" pattern="[0-9.,]+" class="form-control typing-price " />
+
+            <!-- Hiển thị giá đã được định dạng -->
+            <span id="price-convert"></span>
+
+            <!-- Hiển thị lỗi validation -->
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
 
@@ -71,6 +78,7 @@
 
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
+    <!--Hiển thị ảnh trên View-->
     <script>
         $("#ImageUpLoad").change(function() {
             readURL(this);
@@ -80,6 +88,23 @@
     <script>
         CKEDITOR.replace('Description', {
             versionCheck: false
+        });
+    </script>
+
+    <script>
+        // Khi người dùng nhập giá vào ô input có class "typing-price"
+        $(".typing-price").on("keyup", function () {
+
+            // Lấy giá trị người dùng vừa nhập
+            var currency_input = $(this).val();
+
+            // Định dạng số thành tiền Việt Nam và hiển thị vào phần tử có id="price-convert"
+            $("#price-convert").html(
+                new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',   // Định dạng kiểu tiền tệ
+                    currency: 'VND'      // Đơn vị tiền là Việt Nam Đồng
+                }).format(currency_input) // Chuyển số thành định dạng tiền
+            );
         });
     </script>
 }
