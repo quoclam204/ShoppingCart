@@ -1,0 +1,15 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="640" fill="#0b1220"/>
+  <rect x="70" y="80" width="1060" height="480" rx="24" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <rect x="100" y="110" width="220" height="400" rx="16" fill="#1f2937"/>
+  <rect x="340" y="110" width="740" height="90" rx="16" fill="#1d4ed8"/>
+  <rect x="340" y="220" width="220" height="120" rx="16" fill="#0f766e"/>
+  <rect x="580" y="220" width="220" height="120" rx="16" fill="#7c3aed"/>
+  <rect x="820" y="220" width="240" height="120" rx="16" fill="#dc2626"/>
+  <rect x="340" y="360" width="720" height="120" rx="16" fill="#374151"/>
+  <text x="370" y="160" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="28" font-weight="700">Admin Dashboard</text>
+  <text x="370" y="260" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="22" font-weight="600">Products</text>
+  <text x="610" y="260" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="22" font-weight="600">Orders</text>
+  <text x="850" y="260" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="22" font-weight="600">Contacts</text>
+  <text x="370" y="410" fill="#e5e7eb" font-family="Segoe UI, Arial" font-size="18">Quản lý danh mục, thương hiệu, slider và người dùng</text>
+</svg>

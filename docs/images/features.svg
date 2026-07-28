@@ -1,0 +1,20 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="640" fill="#f8fafc"/>
+  <rect x="80" y="80" width="1040" height="480" rx="22" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="120" y="150" fill="#0f172a" font-family="Segoe UI, Arial" font-size="36" font-weight="700">Các tính năng chính</text>
+  <rect x="120" y="190" width="300" height="220" rx="18" fill="#eff6ff"/>
+  <rect x="450" y="190" width="300" height="220" rx="18" fill="#ecfeff"/>
+  <rect x="780" y="190" width="300" height="220" rx="18" fill="#f5f3ff"/>
+  <circle cx="270" cy="250" r="44" fill="#2563eb"/>
+  <circle cx="600" cy="250" r="44" fill="#0f766e"/>
+  <circle cx="930" cy="250" r="44" fill="#7c3aed"/>
+  <text x="220" y="260" fill="#fff" font-family="Segoe UI, Arial" font-size="24" font-weight="700">01</text>
+  <text x="550" y="260" fill="#fff" font-family="Segoe UI, Arial" font-size="24" font-weight="700">02</text>
+  <text x="880" y="260" fill="#fff" font-family="Segoe UI, Arial" font-size="24" font-weight="700">03</text>
+  <text x="180" y="330" fill="#0f172a" font-family="Segoe UI, Arial" font-size="24" font-weight="700">Sản phẩm</text>
+  <text x="510" y="330" fill="#0f172a" font-family="Segoe UI, Arial" font-size="24" font-weight="700">Giỏ hàng</text>
+  <text x="840" y="330" fill="#0f172a" font-family="Segoe UI, Arial" font-size="24" font-weight="700">Quản trị</text>
+  <text x="150" y="368" fill="#475569" font-family="Segoe UI, Arial" font-size="16">Danh mục, thương hiệu, tìm kiếm và chi tiết sản phẩm</text>
+  <text x="480" y="368" fill="#475569" font-family="Segoe UI, Arial" font-size="16">Thêm vào giỏ, cập nhật số lượng và thanh toán</text>
+  <text x="810" y="368" fill="#475569" font-family="Segoe UI, Arial" font-size="16">Quản lý sản phẩm, đơn hàng, slider và liên hệ</text>
+</svg>

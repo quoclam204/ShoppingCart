@@ -38,5 +38,14 @@ namespace ShoppingCart.Models
         public IFormFile? ImageUpLoad { get; set; }
 
         public RatingModel Ratings { get; set; }
+
+
+        // Thêm số lượng sản phẩm
+
+        // Số lượng sản phẩm còn trong kho.
+        public int Quantity { get; set; }
+
+        // Số lượng đã bán
+        public int Sold { get; set; }
     }
 }

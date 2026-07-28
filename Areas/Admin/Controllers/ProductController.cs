@@ -250,5 +250,39 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        [Route("AddQuantity")]
+        public async Task<IActionResult> AddQuantity(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        [HttpPost]
+        [Route("StoreProductQuantity")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StoreProductQuantity(ProductQuantityModel productQuantityModel)
+        {
+            var product = await _dataContext.Products.FindAsync(productQuantityModel.ProductId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.Quantity += productQuantityModel.Quantity;  
+
+            productQuantityModel.Quantity = productQuantityModel.Quantity;
+            productQuantityModel.ProductId = productQuantityModel.ProductId;
+            productQuantityModel.DateCreated = DateTime.Now;
+
+            _dataContext.Add(productQuantityModel);
+            await _dataContext.SaveChangesAsync();
+            TempData ["success"] = "Cập nhật số lượng sản phẩm thành công!";
+
+            return RedirectToAction("AddQuantity", "Product", new {Id = productQuantityModel.ProductId });
+        }
+
     }
 }

@@ -15,6 +15,7 @@
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Số lượng sản phẩm</th>
             <th scope="col">Mô tả</th>
             <th scope="col">Giá</th>
             <th scope="col">Hỉnh ảnh</th>
@@ -30,6 +31,7 @@
             <tr>
                 <th scope="row">@item.Id</th>
                 <td>@item.Name</td>
+                <td><a asp-controller="Product" asp-action="AddQuantity" asp-route-id="@item.Id">Thêm số lượng</a> </td>
                 <td>@Html.Raw(item.Description)</td>
                 <td>@item.Price.ToString("#,##0 VNĐ")</td>
                 <td><img src="~/media/products/@item.Image" width="120px">

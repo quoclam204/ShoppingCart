@@ -1,0 +1,18 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="640" fill="#0f172a" rx="24"/>
+  <rect x="60" y="80" width="1080" height="480" rx="20" fill="#111827" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="90" y="120" width="260" height="360" rx="16" fill="#1f2937"/>
+  <rect x="370" y="120" width="720" height="90" rx="14" fill="#1e3a8a"/>
+  <rect x="370" y="235" width="330" height="220" rx="14" fill="#0f766e"/>
+  <rect x="720" y="235" width="330" height="220" rx="14" fill="#7c3aed"/>
+  <circle cx="220" cy="210" r="54" fill="#38bdf8"/>
+  <rect x="120" y="300" width="180" height="16" rx="8" fill="#e5e7eb"/>
+  <rect x="120" y="332" width="140" height="12" rx="6" fill="#94a3b8"/>
+  <rect x="120" y="360" width="160" height="12" rx="6" fill="#94a3b8"/>
+  <text x="410" y="175" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="28" font-weight="700">Shopping Cart</text>
+  <text x="410" y="205" fill="#bfdbfe" font-family="Segoe UI, Arial" font-size="16">ASP.NET Core MVC e-commerce website</text>
+  <text x="398" y="282" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="24" font-weight="600">Products</text>
+  <text x="748" y="282" fill="#f8fafc" font-family="Segoe UI, Arial" font-size="24" font-weight="600">Cart & Checkout</text>
+  <text x="398" y="320" fill="#d1fae5" font-family="Segoe UI, Arial" font-size="14">Danh mục, thương hiệu, tìm kiếm sản phẩm</text>
+  <text x="748" y="320" fill="#ede9fe" font-family="Segoe UI, Arial" font-size="14">Giỏ hàng, wishlist, thanh toán nhanh</text>
+</svg>
