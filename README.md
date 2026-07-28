@@ -6,17 +6,17 @@ Shopping Cart là một ứng dụng thương mại điện tử được xây d
 
 Bạn có thể xem thêm các hình ảnh minh họa dưới đây để dễ hình dung giao diện của các trang chính trong hệ thống:
 
-- Trang Home: giao diện trang chủ với sản phẩm nổi bật và các mục giới thiệu
+- Trang Home: giao diện trang chủ với các sản phẩm nổi bật
+<img width="1919" height="1079" alt="Image" src="https://github.com/user-attachments/assets/ee6e172b-fe9a-414d-867d-bcecb55a1310" />
 - Trang Giỏ hàng: nơi người dùng xem sản phẩm đã chọn, cập nhật số lượng và tiến hành thanh toán
+<img width="1919" height="1033" alt="Image" src="https://github.com/user-attachments/assets/a6bc66ad-9c13-4c9c-9faf-84093a32b2d4" />
 - Trang Danh mục: hiển thị sản phẩm theo từng nhóm danh mục
+<img width="1919" height="1033" alt="Image" src="https://github.com/user-attachments/assets/52cbe683-6aa9-4209-a234-c15455163fd0" />
 - Trang Thương hiệu: trình bày sản phẩm theo từng thương hiệu như Apple, Samsung
+<img width="1919" height="1030" alt="Image" src="https://github.com/user-attachments/assets/9b2c79b7-d9fe-479c-ace5-aca66c43e8b1" />
 - Trang Admin sản phẩm: khu vực quản trị cho phép thêm, sửa và quản lý sản phẩm
+<img width="1919" height="1030" alt="Image" src="https://github.com/user-attachments/assets/e9271451-1170-4de8-a401-7a25c90bff5b" />
 
-![Mô tả trang Home](docs/images/shopping-cart-overview.svg)
-
-![Mô tả các tính năng chính](docs/images/features.svg)
-
-![Mô tả trang quản trị sản phẩm](docs/images/admin-dashboard.svg)
 
 ## Tính năng chính
 
