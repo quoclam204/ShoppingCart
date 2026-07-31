@@ -4,6 +4,7 @@ using ShoppingCart.Repository;
 using System.Security.Claims;
 
 using ShoppingCart.Areas.Admin.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingCart.Controllers
 {
@@ -58,6 +59,13 @@ namespace ShoppingCart.Controllers
                     orderDetails.Price = cart.Price;
                     orderDetails.Quantity = cart.Quantity;
 
+                    // Cập nhật số lượng sản phẩm
+                    var product = await _dataContext.Products.Where(p => p.Id == cart.ProductId).FirstAsync();
+                    product.Quantity -= cart.Quantity;
+                    product.Sold += cart.Quantity;
+                    _dataContext.Update(product);
+
+                    // Thêm vào chi tiết đơn hàng
                     _dataContext.Add(orderDetails);
                     _dataContext.SaveChanges();
                 }    

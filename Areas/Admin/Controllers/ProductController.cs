@@ -251,10 +251,16 @@ namespace ShoppingCart.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        #region Thêm số lượng sản phẩm
         [HttpGet]
         [Route("AddQuantity")]
         public async Task<IActionResult> AddQuantity(int id)
         {
+            // Lấy lịch sử nhập kho của sản phẩm đó
+            var productbyquantity = await _dataContext.ProductQuantities.Where(pq => pq.ProductId == id).ToListAsync();
+            ViewBag.ProductByQuantity = productbyquantity;
+
+            // Lấy id sản phẩm để hiển thị lên view
             ViewBag.Id = id;
             return View();
         }
@@ -271,10 +277,9 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            // Cộng số lượng vừa nhập vào số lượng hiện có.
             product.Quantity += productQuantityModel.Quantity;  
 
-            productQuantityModel.Quantity = productQuantityModel.Quantity;
-            productQuantityModel.ProductId = productQuantityModel.ProductId;
             productQuantityModel.DateCreated = DateTime.Now;
 
             _dataContext.Add(productQuantityModel);
@@ -283,6 +288,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
             return RedirectToAction("AddQuantity", "Product", new {Id = productQuantityModel.ProductId });
         }
+        #endregion
 
     }
 }

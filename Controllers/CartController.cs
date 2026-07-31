@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;
 using ShoppingCart.Repository;
@@ -99,18 +100,33 @@ namespace ShoppingCart.Controllers
         // tăng số lượng sản phẩm trong giỏ hàng
         public async Task<IActionResult> Increase(int Id)
         {
-            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
+            ProductModel product = await _dataContext.Products.Where(p => p.Id == Id).FirstOrDefaultAsync();
 
+            List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
             CartItemModel cartItem = cart.Where(c => c.ProductId == Id).FirstOrDefault();
 
-            if (cartItem != null)
+            if (cartItem.Quantity >= 1 && product.Quantity > cartItem.Quantity)
             {
-                cartItem.Quantity++;
+                ++cartItem.Quantity;
+                TempData["success"] = "Đã tăng số lượng sản phẩm trong giỏ hàng thành công!";
+            }
+            else
+            {
+                cartItem.Quantity = product.Quantity;
+                TempData["error"] = "Không thể thêm sản phẩm vì đã đạt số lượng tối đa!";
+
+                // cart.RemoveAll(p => p.ProductId == Id);
+            }
+                
+            if (cart.Count == 0)
+            {
+                HttpContext.Session.Remove("Cart");
+            }
+            else
+            {
+                HttpContext.Session.SetJson("Cart", cart);
             }
 
-            HttpContext.Session.SetJson("Cart", cart);
-
-            TempData["success"] = "Tăng số lượng sản phẩm trong giỏ hàng thành công!";
             return RedirectToAction("Index");
         }
 
