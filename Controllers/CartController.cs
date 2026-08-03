@@ -159,5 +159,8 @@ namespace ShoppingCart.Controllers
             TempData["success"] = "Xóa tất cả sản phẩm khỏi giỏ hàng thành công!";
             return RedirectToAction("Index");
         }
+
+        // Tính phí shipping dựa vào địa chỉ người dùng nhập vào
+
     }
 }
