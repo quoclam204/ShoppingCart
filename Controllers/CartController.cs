@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;
 using ShoppingCart.Repository;
@@ -20,12 +21,24 @@ namespace ShoppingCart.Controllers
             // lấy dữ liệu giỏ hàng từ session
             List<CartItemModel> cartItems = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
 
+            // Lấy phí vận chuyển từ Cookie
+            var shippingPriceCookie = Request.Cookies["ShippingPrice"];
+            decimal shippingPrice = 0;
+
+            // Nếu shipping tồn tại
+            if (shippingPriceCookie != null)
+            {
+                // Chuyển Cookie thành số
+                var shippingPriceJson = shippingPriceCookie;
+                shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
+            }    
+
             CartItemViewModel cartVM = new()
             {
                 CartItems = cartItems,
-                GrandTotal = cartItems.Sum(x => x.Quantity * x.Price)
+                GrandTotal = cartItems.Sum(x => x.Quantity * x.Price), 
+                ShippingCost = shippingPrice // Tính phí ship
             };
-
 
             return View(cartVM);
         }
@@ -34,7 +47,6 @@ namespace ShoppingCart.Controllers
         {
             return View("~/Views/Checkout/Index.cshtml");
         }
-
 
         // thêm sản phẩm vào giỏ hàng
         [HttpPost]
@@ -161,6 +173,56 @@ namespace ShoppingCart.Controllers
         }
 
         // Tính phí shipping dựa vào địa chỉ người dùng nhập vào
+        [HttpPost]
+        [Route("Cart/GetShipping")]
+        public async Task<IActionResult> GetShipping(ShippingModel shippingModel, string quan, string tinh, string phuong)
+        {
+            var existingShipping = await _dataContext.Shippings
+                .FirstOrDefaultAsync(s => s.Ward == phuong && s.District == quan && s.City == tinh);
 
+            decimal shippingPrice = 0;
+
+            // Nếu tìm được shipping trong database thì lấy giá, nếu lấy giá mặc định
+            if (existingShipping != null)
+            {
+                shippingPrice = existingShipping.Price;
+            }
+            else
+            {
+                shippingPrice = 50000; // Giá mặc định nếu không tìm thấy
+            }
+
+            // Chuyển shippingPrice thành chuỗi JSON để có thể lưu vào Cookie.
+            var shippingPriceJson = JsonConvert.SerializeObject(shippingPrice); 
+            try
+            {
+                // Tạo cookie
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = DateTimeOffset.UtcNow.AddDays(30), // Thời gian sống của cookie
+                    Secure = true, // Chỉ gửi cookie qua HTTPS
+                };
+
+                // Lưu cookie
+                Response.Cookies.Append("ShippingPrice", shippingPriceJson, cookieOptions);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu cần
+                Console.WriteLine($"Error adding shipping price cookie: {ex.Message}");
+            }   
+            return Json(new { shippingPrice });
+        }
+
+        [HttpGet]
+        [Route("Cart/DeleteShipping")]
+        // xóa phí vận chuyển đã lưu trong Cookie.
+        public async Task<IActionResult> DeleteShipping()
+        {
+            Response.Cookies.Delete("ShippingPrice"); // Xóa cookie có tên ShippingPrice
+            //return Json(new { success = true }); // kiểm tra xóa có thành công không
+            return RedirectToAction("Index", "Cart"); // Chuyển hướng về trang giỏ hàng.
+        }
     }
 }

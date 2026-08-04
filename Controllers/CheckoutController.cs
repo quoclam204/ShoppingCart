@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using ShoppingCart.Areas.Admin.Repository;
 using ShoppingCart.Models;
 using ShoppingCart.Repository;
 using System.Security.Claims;
-
-using ShoppingCart.Areas.Admin.Repository;
-using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingCart.Controllers
 {
@@ -40,6 +40,19 @@ namespace ShoppingCart.Controllers
                 var oderCode = Guid.NewGuid().ToString();
                 var oderItem = new OrderModel();
                 oderItem.OrderCode = oderCode;
+
+                // Lấy phí vận chuyển từ Cookie
+                var shippingPriceCookie = Request.Cookies["ShippingPrice"];
+                decimal shippingPrice = 0;
+                // Nếu shipping tồn tại
+                if (shippingPriceCookie != null)
+                {
+                    // Chuyển Cookie thành số
+                    var shippingPriceJson = shippingPriceCookie;
+                    shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
+                }
+                oderItem.ShippingCost = shippingPrice;
+
                 oderItem.UserName = userEmail;
                 oderItem.Status = 1;
                 oderItem.CreatedDate = DateTime.Now;

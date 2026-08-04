@@ -21,6 +21,7 @@
         <tr>
             <th scope="col">Mã đơn hàng</th>
             <th scope="col">Tên đăng nhập của người đặt hàng</th>
+            <th scope="col">Phí vận chuyển</th>
             <th scope="col">Ngày và giờ tạo đơn hàng</th>
             <th scope="col">Trạng thái của đơn hàng</th>
             <th scope="col">Thao tác</th>
@@ -32,6 +33,7 @@
             <tr>
                 <td>@item.OrderCode</td>
                 <td>@item.UserName</td>
+                <td>@item.ShippingCost.ToString("#,##0 VNĐ")</td>
                 <td>@item.CreatedDate.ToString("dd/MM/yyyy | HH:mm:ss")</td>
 
                 <td>

@@ -45,9 +45,19 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
         }
 
+        // Chi tiet don hang
+        [HttpGet]
+        [Route("ViewOrder")]
         public async Task<IActionResult> ViewOrder(string ordercode)
         {
-            var detailsOrder = await _dataContext.OrderDetails.Include(od => od.Product).Where(od => od.OrderCode == ordercode).ToListAsync();
+            // Lấy danh sách sản phẩm đơn hàng
+            var detailsOrder = await _dataContext.OrderDetails.Include(od => od.Product)
+                .Where(od => od.OrderCode == ordercode).ToListAsync();
+
+            // Lấy phí vận chuyển
+            var shippingCost = _dataContext.Orders.Where(o => o.OrderCode == ordercode).First();
+            ViewBag.ShippingCost = shippingCost.ShippingCost;   
+
             return View(detailsOrder);
         }
 

@@ -7,5 +7,8 @@
 
         // Tổng tiền
         public decimal GrandTotal { get; set; }
+
+        // Lưu phí vận chuyển của đơn hàng
+        public decimal ShippingCost { get; set; }   
     }
 }

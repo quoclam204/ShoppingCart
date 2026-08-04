@@ -62,13 +62,15 @@
                         }
                         <tr rowspan="5">
                             <td>
-                                Tổng: <p class="cart_total_price"> @Model.GrandTotal.ToString()</p>
+                                Tổng: <p class="cart_total_price"> @Model.GrandTotal.ToString("#,##0 VNĐ")</p>
+                                Phí vận chuyển: <p class="cart_total_price"> @Model.ShippingCost.ToString("#,##0 VNĐ")</p>
+                                <p><a asp-action="DeleteShipping" asp-controller="Cart">Xóa phí vận chuyển</a></p>
                             </td>
 
                             <td>
                                 <div class="form-group">
                                     <label>Chọn</label>
-                                    <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+                                    <select class="css_select" id=  "tinh" name="tinh" title="Chọn Tỉnh Thành">
                                         <option value="0">Tỉnh Thành</option>
                                     </select>
                                 </div>
@@ -98,7 +100,15 @@
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
                                 <td>
-                                    <a class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="Checkout"> Thang toán </a>
+                                    @if (Model.ShippingCost <= 0)
+                                    {
+                                        <a disabled="disabled" class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="Checkout"> Đặt hàng </a><br/>
+                                        <span class="text text-danger">Yêu cầu tính phí vận chuyển trước khi đặt hàng.</span>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="Checkout"> Đặt hàng </a>
+                                    }
                                 </td>
                             }
                         </tr>
