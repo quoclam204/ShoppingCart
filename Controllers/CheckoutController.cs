@@ -96,7 +96,7 @@ namespace ShoppingCart.Controllers
                 await _emailSender.SendEmailAsync(receiver, subject, massage);
 
                 TempData["Success"] = "Đặt hàng thành công!";
-                return RedirectToAction("Index", "Cart");
+                return RedirectToAction("History", "Accout");
             }
         }
     }

@@ -55,8 +55,10 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 .Where(od => od.OrderCode == ordercode).ToListAsync();
 
             // Lấy phí vận chuyển
-            var shippingCost = _dataContext.Orders.Where(o => o.OrderCode == ordercode).First();
-            ViewBag.ShippingCost = shippingCost.ShippingCost;   
+            var order = _dataContext.Orders.Where(o => o.OrderCode == ordercode).First();
+            ViewBag.ShippingCost = order.ShippingCost;   
+
+            ViewBag.Status = order.Status; // Trạng thái đơn hàng
 
             return View(detailsOrder);
         }

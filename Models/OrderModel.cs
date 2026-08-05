@@ -6,7 +6,7 @@
         public string OrderCode { get; set; }
         public decimal ShippingCost { get; set; } // Phí vận chuyển của đơn hàng.
         public string CouponCode { get; set; } // Mã giảm giá áp dụng cho đơn hàng.
-        public string UserName { get; set; }
+        public string UserName { get; set; } // Tên hoặc Email người dùng đặt hàng
         public DateTime CreatedDate { get; set; }
         public int Status { get; set; }
     }
