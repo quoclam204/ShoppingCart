@@ -53,6 +53,10 @@ namespace ShoppingCart.Controllers
                 }
                 oderItem.ShippingCost = shippingPrice;
 
+                // Lưu thông tin mã khuyến mãi vào database khi thanh toán
+                var coupon_code = Request.Cookies["CouponTitle"]; // Nhận mã khuyến mãi từ cookie
+                oderItem.CouponCode = coupon_code;
+
                 oderItem.UserName = userEmail;
                 oderItem.Status = 1;
                 oderItem.CreatedDate = DateTime.Now;

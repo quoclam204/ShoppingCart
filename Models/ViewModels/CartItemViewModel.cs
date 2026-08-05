@@ -9,6 +9,9 @@
         public decimal GrandTotal { get; set; }
 
         // Lưu phí vận chuyển của đơn hàng
-        public decimal ShippingCost { get; set; }   
+        public decimal ShippingCost { get; set; }
+
+        // Mã giảm giá (nếu có)
+        public string CouponCode { get; set; }
     }
 }

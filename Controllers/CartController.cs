@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;
 using ShoppingCart.Repository;
@@ -33,11 +34,15 @@ namespace ShoppingCart.Controllers
                 shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
             }    
 
+            // Nhận mã khuyến mãi từ cookie
+            var coupon_code = Request.Cookies["CouponTitle"];
+
             CartItemViewModel cartVM = new()
             {
                 CartItems = cartItems,
                 GrandTotal = cartItems.Sum(x => x.Quantity * x.Price), 
-                ShippingCost = shippingPrice // Tính phí ship
+                ShippingCost = shippingPrice, // Tính phí ship
+                CouponCode = coupon_code
             };
 
             return View(cartVM);
@@ -223,6 +228,58 @@ namespace ShoppingCart.Controllers
             Response.Cookies.Delete("ShippingPrice"); // Xóa cookie có tên ShippingPrice
             //return Json(new { success = true }); // kiểm tra xóa có thành công không
             return RedirectToAction("Index", "Cart"); // Chuyển hướng về trang giỏ hàng.
+        }
+
+        // Áp dụng mã giảm giá
+        [HttpPost]
+        [Route("Cart/GetCoupon")]
+        public async Task<IActionResult> GetCoupon(string coupon_value)
+        {
+            // Tìm mã khuyến mãi trong cơ sở dữ liệu theo tên mã người dùng nhập
+            var validCoupon = await _dataContext.Coupons
+                .FirstOrDefaultAsync(x => x.Name == coupon_value);
+
+            // Ko tìm thấy mã khuyến mãi
+            if (validCoupon == null)
+            {
+                return Ok(new
+                {
+                    success = false,
+                    message = "Không tìm thấy mã khuyến mãi."
+                });
+            }
+
+            // Mã khuyến mãi hết hạn
+            if (validCoupon.DateExpỉed < DateTime.Now)
+            {
+                return Ok(new
+                {
+                    success = false,
+                    message = "Mã khuyến mãi đã hết hạn."
+                });
+            }
+
+            // Tạo chuỗi thông tin mã khuyến mãi để lưu vào Cookie và hiển thị lên view
+            string couponTitle = $"{validCoupon.Name} | {validCoupon.Description}";
+
+            // Tạo cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(30)
+            };
+
+            // Lưu thông tin mã khuyến mãi vào cookie
+            Response.Cookies.Append("CouponTitle", couponTitle, cookieOptions);
+
+            // Trả kết quả thành công về cho Ajax
+            return Ok(new
+            {
+                success = true,
+                message = "Áp dụng mã khuyến mãi thành công."
+            });
         }
     }
 }
