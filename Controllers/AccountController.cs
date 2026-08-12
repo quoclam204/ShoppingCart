@@ -144,5 +144,17 @@ namespace ShoppingCart.Controllers
 
             return RedirectToAction("History", "Account");
         }
+
+        // Mật khẩu mới
+        public async Task<IActionResult> NewPass()
+        {
+            return View();
+        }
+
+        // Quên mật khẩu
+        public async Task<IActionResult> ForgetPass()
+        {
+            return View();
+        }
     }
 }

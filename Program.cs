@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Areas.Admin.Repository;
 using ShoppingCart.Models;
+using ShoppingCart.Models.MoMo;
 using ShoppingCart.Repository;
+using ShoppingCart.Services.MoMo;
 using System.Runtime.InteropServices;
 
 namespace ShoppingCart
@@ -12,6 +14,13 @@ namespace ShoppingCart
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+
+            #region Đăng ký dịch vụ MoMo
+            // Conect Momo API
+            builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI")); // Đọc cấu hình MoMo từ appsettings.json
+            builder.Services.AddScoped<IMomoService, MomoService>(); // Đăng ký dịch vụ MoMo để có thể inject vào Controller hoặc Service
+            #endregion
 
             // Connection db
             //builder.Services.AddDbContext<DataContext>(options =>

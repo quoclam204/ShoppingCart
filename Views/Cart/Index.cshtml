@@ -125,6 +125,18 @@
                                         <a class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="Checkout"> Đặt hàng </a>
                                     }
                                 </td>
+
+                                // Thanh toán
+                                <td>
+                                    <form method="POST" asp-action="CreatePaymentMomo" asp-controller="Payment">
+                                        <input type="hidden" name="Amount" value="@Model.GrandTotal" />
+                                        <input type="hidden" name="OrderId" value="@Guid.NewGuid().ToString()" />
+                                        <input type="hidden" name="OrderInfo" value="Thanh toán MoMo cho đơn hàng tại LamStore" />
+                                        <input type="hidden" name="Fullname" value="LamStore" />
+
+                                        <button class="btn btn-danger" name="PayUrl" type="submit">Thanh toán bằng MoMo</button>
+                                    </form>
+                                </td>
                             }
                         </tr>
                     }
