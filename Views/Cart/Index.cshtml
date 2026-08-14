@@ -117,7 +117,7 @@
                                 <td>
                                     @if (Model.ShippingCost <= 0)
                                     {
-                                        <a disabled="disabled" class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="Checkout"> Đặt hàng </a><br/>
+                                        <a disabled="disabled" onclick="return confirm('Xác nhận đặt hàng.')" class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="Checkout"> Đặt hàng </a><br/>
                                         <span class="text text-danger">Yêu cầu tính phí vận chuyển trước khi đặt hàng.</span>
                                     }
                                     else

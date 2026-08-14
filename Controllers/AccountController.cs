@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Areas.Admin.Repository;
 using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;
 using ShoppingCart.Repository;
@@ -16,12 +17,18 @@ namespace ShoppingCart.Controllers
         private UserManager<AppUserModel> _userManage;
         private SignInManager<AppUserModel> _signInManager;
 
-        public AccountController(DataContext context, UserManager<AppUserModel> userManage, SignInManager<AppUserModel> signInManager)
+        private readonly IEmailSender _emailSender;
+
+        // tự động tạo và truyền các đối tượng này vào Controller.
+        public AccountController(DataContext context, UserManager<AppUserModel> userManage, SignInManager<AppUserModel> signInManager,
+                                IEmailSender emailSender)
         {
             _dataContext = context;
 
             _userManage = userManage;
             _signInManager = signInManager;
+
+            _emailSender = emailSender;
         }
 
         #region Đăng nhập tài khoản
@@ -145,16 +152,98 @@ namespace ShoppingCart.Controllers
             return RedirectToAction("History", "Account");
         }
 
-        // Mật khẩu mới
-        public async Task<IActionResult> NewPass()
-        {
-            return View();
-        }
-
-        // Quên mật khẩu
+        #region Quên mật khẩu
+        // Hiển thị form quên mật khẩu
         public async Task<IActionResult> ForgetPass()
         {
             return View();
         }
+
+        // Hàm gửi mail khi đổi mật khẩu
+        [HttpPost]
+        public async Task<IActionResult> SendMailForgetPass(AppUserModel user)
+        {
+            var checkMail = await _userManage.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+
+            if (checkMail == null)
+            {
+                TempData["error"] = "Email không tồn tại trong hệ thống!";
+                return RedirectToAction("ForgetPass", "Account");
+            }    
+            else // Có email
+            {
+                string token = Guid.NewGuid().ToString(); // Tạo token ngẫu nhiên
+
+                checkMail.Token = token; // Lưu token vào database
+                _dataContext.Update(checkMail);
+                await _dataContext.SaveChangesAsync();
+
+                // Gửi email cho người dùng
+                var receiver = checkMail.Email; // Email của người nhận
+                var subject = "Thay đổi mật khẩu cho người dùng " + checkMail.Email;
+                var message = "Bạn đã yêu cầu thay đổi mật khẩu. Vui lòng nhấn vào link sau để thay đổi mật khẩu: " +
+                    "<a href='" + $"{Request.Scheme}://{Request.Host}/Account/NewPass" + 
+                    $"?email=" + checkMail.Email + "&token=" + token + "'>"; // Lấy đường dẫn tự động 
+
+                // Gửi email
+                await _emailSender.SendEmailAsync(receiver, subject, message);
+            }
+
+            TempData["success"] = "Vui lòng kiểm tra email để thay đổi mật khẩu!";
+            return RedirectToAction("ForgetPass", "Account");
+        }
+
+        // Kiểm tra Email + Token
+        public async Task<IActionResult> NewPass(AppUserModel user, string token)
+        {
+            // Kiểm tra xem người dùng có tồn tại trong database hay không
+            var checkUser = await _userManage.Users
+                .Where(u => u.Email == user.Email)
+                .Where(u => u.Token == user.Token).FirstOrDefaultAsync();
+
+            if (checkUser != null)
+            {
+                ViewBag.Email = checkUser.Email;
+                ViewBag.Token = token;
+            }
+            else
+            {
+                TempData["error"] = "Email hoặc Token không hợp lệ!";
+                return RedirectToAction("ForgetPass", "Account");
+            }
+
+            return View();
+        }
+
+        // Cập nhật mật khẩu mới
+        [HttpPost]
+        public async Task<IActionResult> UpdateNewPassword(AppUserModel user, string token)
+        {
+            var checkUser = await _userManage.Users
+                .Where(u => u.Email == user.Email)
+                .Where(t => t.Token == user.Token).FirstOrDefaultAsync();
+
+            if (checkUser != null)
+            {
+                string newToken = Guid.NewGuid().ToString();
+
+                // Hash password
+                var passWordHasher = new PasswordHasher<AppUserModel>();
+                var passwordHash = passWordHasher.HashPassword(checkUser, user.PasswordHash); // User hiện tại và mật khẩu muốn hash
+
+                checkUser.PasswordHash = passwordHash; // Lưu mật khẩu mới vào database
+                checkUser.Token = newToken; // Cập nhật token mới
+
+                await _userManage.UpdateAsync(checkUser);
+                TempData["success"] = "Cập nhật mật khẩu thành công!";
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                TempData["error"] = "Email hoặc Token không hợp lệ!";
+                return RedirectToAction("ForgetPass", "Account");
+            }
+        }
+        #endregion
     }
 }

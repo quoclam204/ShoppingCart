@@ -14,7 +14,7 @@
 					<!--login form-->
 					<h2>Quên mật khẩu</h2>
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-					<form asp-controller="Account" asp-action="Login">
+					<form asp-action="SendMailForgetPass" asp-controller="Account">
 
 						<div class="form-group">
 							<label>Email</label>
@@ -23,7 +23,8 @@
 						</div>
 
 						<button class="btn btn-default">Gửi</button>
-						<a asp-controller="Account" asp-action="Create" class="btn btn-outline-primary">
+
+						<a asp-action="Create" asp-controller="Account" class="btn btn-outline-primary">
 							<i class="bi bi-arrow-left"></i> Đăng ký tài khoản
 						</a> <br />
 					</form>

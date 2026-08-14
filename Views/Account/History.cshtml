@@ -47,7 +47,7 @@
                     @* = 3 thì sẽ ẩn nút hủy đơn hàng *@
                     @if (@item.Status != 3)
                     {
-                        <a asp-action="CancelOrder" class="btn btn-danger btn-sm" asp-controller="Account" asp-route-ordercode="@item.OrderCode">Hủy đơn hàng</a>
+                        <a onclick="return confirm('Xác nhận hủy đơn.')" asp-action="CancelOrder" class="btn btn-danger btn-sm" asp-controller="Account" asp-route-ordercode="@item.OrderCode">Hủy đơn hàng</a>
                     }
                 </td>
             </tr>

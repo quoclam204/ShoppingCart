@@ -3,6 +3,7 @@ using System.Net.Mail;
 
 namespace ShoppingCart.Areas.Admin.Repository
 {
+    // dịch vụ gửi email của hệ thống
     public class EmailSender : IEmailSender
     {
         public Task SendEmailAsync(string email, string subject, string message)
