@@ -6,6 +6,7 @@ using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;
 using ShoppingCart.Repository;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ShoppingCart.Controllers
 {
@@ -36,24 +37,24 @@ namespace ShoppingCart.Controllers
         public IActionResult Login(string returnUrl)
         {
             // quay lại đúng trang người dùng đang truy cập trước đó.
-            return View(new LoginViewModel { ReturnUrl = returnUrl}); 
+            return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = 
+                Microsoft.AspNetCore.Identity.SignInResult result =
                     await _signInManager.PasswordSignInAsync(loginVM.Username, loginVM.Password, false, false);
 
                 if (result.Succeeded)
                 {
                     TempData["success"] = "Đăng nhập thành công!";
-                    return Redirect(loginVM.ReturnUrl ?? "/"); 
-                }    
+                    return Redirect(loginVM.ReturnUrl ?? "/");
+                }
                 ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng!");
-            }    
+            }
             return View(loginVM); // Quay về trang Login.cshtml với @model LoginViewModel
         }
         #endregion
@@ -90,9 +91,9 @@ namespace ShoppingCart.Controllers
                 foreach (IdentityError error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
-                }    
+                }
 
-            }    
+            }
             return View(user);
         }
         #endregion
@@ -109,7 +110,7 @@ namespace ShoppingCart.Controllers
         public async Task<IActionResult> History()
         {
             // Nếu người dùng chưa đăng nhập
-            if ((bool) !User.Identity.IsAuthenticated)
+            if ((bool)!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -123,7 +124,7 @@ namespace ShoppingCart.Controllers
                 .Where(od => od.UserName == userEmail).OrderByDescending(od => od.Id).ToListAsync();
 
             ViewBag.UserEmail = userEmail;
-            return View(order); 
+            return View(order);
         }
 
         // Hủy đơn hàng theo OrderCode
@@ -140,7 +141,7 @@ namespace ShoppingCart.Controllers
             {
                 // Lấy đơn hàng theo OrderCode
                 var order = await _dataContext.Orders.Where(o => o.OrderCode == ordercode).FirstAsync();
-                order.Status = 3; 
+                order.Status = 3;
                 _dataContext.Update(order);
                 await _dataContext.SaveChangesAsync();
             }
@@ -169,7 +170,7 @@ namespace ShoppingCart.Controllers
             {
                 TempData["error"] = "Email không tồn tại trong hệ thống!";
                 return RedirectToAction("ForgetPass", "Account");
-            }    
+            }
             else // Có email
             {
                 string token = Guid.NewGuid().ToString(); // Tạo token ngẫu nhiên
@@ -182,7 +183,7 @@ namespace ShoppingCart.Controllers
                 var receiver = checkMail.Email; // Email của người nhận
                 var subject = "Thay đổi mật khẩu cho người dùng " + checkMail.Email;
                 var message = "Bạn đã yêu cầu thay đổi mật khẩu. Vui lòng nhấn vào link sau để thay đổi mật khẩu: " +
-                    "<a href='" + $"{Request.Scheme}://{Request.Host}/Account/NewPass" + 
+                    "<a href='" + $"{Request.Scheme}://{Request.Host}/Account/NewPass" +
                     $"?email=" + checkMail.Email + "&token=" + token + "'>"; // Lấy đường dẫn tự động 
 
                 // Gửi email
@@ -245,5 +246,71 @@ namespace ShoppingCart.Controllers
             }
         }
         #endregion
+
+        // Lấy thông tin người dùng khi đăng nhập 
+        public async Task<IActionResult> UpdateAccount()
+        {
+            // Nếu người dùng chưa đăng nhập
+            if ((bool)!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Lấy thông tin người dùng đang đăng nhập
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = await _userManage.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        // Thực hiện update thông tin người dùng mới
+        [HttpPost]
+        public async Task<IActionResult> UpdateInfoAccount(AppUserModel user)
+        {
+            // Lấy id người dùng đang đăng nhập
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Lấy user hiện tại từ database
+            var userById = await _userManage.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (userById == null)
+            {
+                return NotFound();
+            }
+
+            // Nếu có dữ liệu người dùng nhập thì cập nhật số điện thoại mới, không thì thôi
+            if (!string.IsNullOrEmpty(user.PhoneNumber))
+            {
+                userById.PhoneNumber = user.PhoneNumber;
+            }
+
+            // Nếu có dữ liệu người dùng nhập thì cập nhật mật khẩu mới, không thì thôi
+            if (!string.IsNullOrEmpty(user.PasswordHash))
+            {
+                var passwordHasher = new PasswordHasher<AppUserModel>();
+
+                var passwordHash = passwordHasher.HashPassword(
+                    userById,
+                    user.PasswordHash
+                );
+
+                userById.PasswordHash = passwordHash;
+            }
+
+            // Lưu database
+            _dataContext.Update(userById);
+            await _dataContext.SaveChangesAsync();
+
+            TempData["success"] = "Cập nhật thông tin tài khoản thành công!";
+
+
+            return RedirectToAction("UpdateAccount", "Account");
+        }
     }
 }
