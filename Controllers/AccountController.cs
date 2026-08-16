@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Areas.Admin.Repository;
@@ -101,7 +104,8 @@ namespace ShoppingCart.Controllers
         // Đăng xuất tài khoản
         public async Task<IActionResult> Logout(string returnUrl = "/")
         {
-            await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync(); // Đăng xuất ra bằng tài khoản thường
+            await HttpContext.SignOutAsync(); // Đăng xuất ra bằng tài khoản Google
             return Redirect(returnUrl);
         }
 
@@ -312,5 +316,40 @@ namespace ShoppingCart.Controllers
 
             return RedirectToAction("UpdateAccount", "Account");
         }
+
+        #region Đăng nhập bằng google
+        // Chuyển người dùng sang gg để đăng nhập
+        public async Task LoginByGoogle()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, 
+                new AuthenticationProperties
+                {
+                    // xử lý thông tin Google trả về.
+                    RedirectUri = Url.Action("GoogleResponse")
+                });
+        }
+
+        // nhận kết quả sau khi đăng nhập Google thành công.
+        public async Task<IActionResult> GoogleResponse()
+        {
+            // Lấy thông tin đăng nhập từ cookie
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Lấy thông tin người dùng từ Google
+            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+            });
+
+            TempData["success"] = "Đăng nhập bằng Google thành công!";
+            return RedirectToAction("Index", "Home");
+
+            //// Xem dữ liệu google trả về dưới dạng Json
+            //return Json(claims); 
+        }
+        #endregion
     }
 }

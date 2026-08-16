@@ -27,10 +27,17 @@
 							<input asp-for="Password" class="form-control" />
 							<span asp-validation-for="Password" class="text-danger"></span>
 						</div>
+
 						<button class="btn btn-default">Login</button>
+
+						<a asp-controller="Account" asp-action="LoginByGoogle" class="btn btn-outline-primary">
+							<i class="bi bi-arrow-left"></i> Đăng nhập bằng Google
+						</a> <br />
+
 						<a asp-controller="Account" asp-action="Create" class="btn btn-outline-primary">
 							<i class="bi bi-arrow-left"></i> Đăng ký tài khoản
 						</a> <br />
+
 						<a asp-controller="Account" asp-action="ForgetPass" class="btn btn-outline-primary">
 							<i class="bi bi-arrow-left"></i> Quên mật khẩu
 						</a>

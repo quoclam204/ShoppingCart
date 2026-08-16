@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Areas.Admin.Repository;
 using ShoppingCart.Models;
@@ -14,7 +16,6 @@ namespace ShoppingCart
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
 
             #region Đăng ký dịch vụ MoMo
             // Conect Momo API
@@ -72,6 +73,30 @@ namespace ShoppingCart
 
                 // Mỗi email chỉ được dùng cho 1 tài khoản duy nhất trong hệ thống.
                 options.User.RequireUniqueEmail = true;
+            });
+            #endregion
+
+            #region Cấu hình đăng nhập bằng tài khoản Google
+            builder.Services.AddAuthentication(options =>
+            {
+                // Xác định cách ASP.NET Core kiểm tra người dùng đã đăng nhập hay chưa
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                // Sau khi đăng nhập thành công, lưu thông tin đăng nhập bằng Cookie
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                // Xác định cơ chế xác thực mặc định khi người dùng cần đăng nhập
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            })
+            // Đăng ký Cookie Authentication
+            .AddCookie()
+            // Đăng ký đăng nhập bằng Google
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                options.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
+
+                options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
             });
             #endregion
 
