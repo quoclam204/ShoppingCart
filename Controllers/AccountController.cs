@@ -8,6 +8,7 @@ using ShoppingCart.Areas.Admin.Repository;
 using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;
 using ShoppingCart.Repository;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -332,10 +333,19 @@ namespace ShoppingCart.Controllers
         // nhận kết quả sau khi đăng nhập Google thành công.
         public async Task<IActionResult> GoogleResponse()
         {
-            // Lấy thông tin đăng nhập từ cookie
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //lấy thông tin đăng nhập từ Cookie.
+            //var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            // Lấy thông tin người dùng từ Google
+            // lấy thông tin trực tiếp từ Google Authentication Scheme.
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded)
+            {
+                // Nếu xác thực ko thành công thì quay lại trang đăng nhập
+                return RedirectToAction("Login");
+            }
+
+            // Lấy thông tin người dùng từ Google khi đăng nhập thành công
             var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
             {
                 claim.Issuer,
@@ -344,8 +354,46 @@ namespace ShoppingCart.Controllers
                 claim.Value
             });
 
-            TempData["success"] = "Đăng nhập bằng Google thành công!";
-            return RedirectToAction("Index", "Home");
+            // tìm Email trong danh sách claims và lấy giá trị Email đó ra.
+            var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            string userName = email.Split('@')[0]; // lấy tên trước dấu @ trong email
+
+            var existingUser = await _userManage.FindByEmailAsync(email); // tìm user trong database theo email
+
+            // Nếu user chưa có trong database thì tạo user mới
+            if (existingUser == null)
+            {
+                // Nếu chưa có user trong database thì tạo mới user với mật khẩu mặc định
+                var passwordHasher = new PasswordHasher<AppUserModel>();
+                var hashedPassword = passwordHasher.HashPassword(null, "123456789");
+
+                // khai báo user mới
+                var newUser = new AppUserModel { UserName = userName, Email = email };
+                newUser.PasswordHash = hashedPassword;
+
+                // Tạo user mới
+                var createUserResult = await _userManage.CreateAsync(newUser);
+
+                if (!createUserResult.Succeeded)
+                {
+                    TempData["error"] = "Đăng ký tài khoản thất bại. Vui lòng thử lại sau.";
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    await _signInManager.SignInAsync(newUser, isPersistent: false); // đăng nhập user mới tạo
+                    TempData["success"] = "Đăng ký tài khoản bằng Google thành công!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                // Nếu user đã có trong database thì đăng nhập user đó
+                await _signInManager.SignInAsync(existingUser, isPersistent: false);
+                TempData["success"] = "Đăng nhập bằng Google thành công!";
+                return RedirectToAction("Index", "Home");
+            }    
 
             //// Xem dữ liệu google trả về dưới dạng Json
             //return Json(claims); 

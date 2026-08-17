@@ -79,14 +79,17 @@ namespace ShoppingCart
             #region Cấu hình đăng nhập bằng tài khoản Google
             builder.Services.AddAuthentication(options =>
             {
-                // Xác định cách ASP.NET Core kiểm tra người dùng đã đăng nhập hay chưa
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //// Xác định cách ASP.NET Core kiểm tra người dùng đã đăng nhập hay chưa
+                //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
-                // Sau khi đăng nhập thành công, lưu thông tin đăng nhập bằng Cookie
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //// Sau khi đăng nhập thành công, lưu thông tin đăng nhập bằng Cookie
+                //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
-                // Xác định cơ chế xác thực mặc định khi người dùng cần đăng nhập
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //// Xác định cơ chế xác thực mặc định khi người dùng cần đăng nhập
+                //options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                //=> đóng lại vì mặc định nó hiểu Authentication google đều xác thực theo kiểu gg hết kể cả đăng nhập bằng cookie, 
+                //nên không cần khai báo nữa. Nếu muốn dùng cookie thì phải khai báo như trên.
 
             })
             // Đăng ký Cookie Authentication
