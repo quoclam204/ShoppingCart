@@ -88,6 +88,61 @@ namespace ShoppingCart.Areas.Admin.Controllers
 
             // Thực hiện update trạng thái
             order.Status = status;
+            _dataContext.Update(order);
+
+            if (status == 0)
+            {
+                // lấy danh sách chi tiết đơn hàng để cập nhật số lượng sản phẩm dựa vào ordercode
+                var detailsOrder = await _dataContext.OrderDetails
+                    .Include(od => od.Product)
+                    .Where(od => od.OrderCode == order.OrderCode)
+                    .Select(od => new
+                    {
+                        od.Quantity,
+                        od.Product.Price,
+                        od.Product.CapitalPrice
+                    }).ToListAsync();
+
+                // lấy dữ liệu thống kê dựa vào ngày đặt hàng
+                var statistical = await _dataContext.Statisticals
+                    .FirstOrDefaultAsync(s => s.DateCreated.Date == order.CreatedDate.Date);
+
+                if (statistical != null)
+                {
+                    foreach (var orderDetail in detailsOrder)
+                    {
+                        statistical.Quantity += 1; // đơn hàng đã đặt
+                        statistical.Sold += orderDetail.Quantity; // số lượng bán
+                        statistical.Revenue += orderDetail.Quantity * orderDetail.Price; // doanh thu
+                        statistical.Profit += orderDetail.Price - orderDetail.CapitalPrice; // lợi nhuận
+                    }
+                    _dataContext.Update(statistical);
+                }
+                else
+                {
+                    int new_quatity = 0;
+                    int new_sold = 0;   
+                    decimal new_profit = 0;
+
+                    foreach (var orderDetail in detailsOrder)
+                    {
+                        new_quatity += 1; // đơn hàng đã đặt
+                        new_sold += orderDetail.Quantity; // số lượng bán
+                        new_profit += orderDetail.Price - orderDetail.CapitalPrice; // lợi nhuận
+
+                        statistical = new StatisticalModel
+                        {
+                            DateCreated = order.CreatedDate.Date,
+                            Quantity = new_quatity,
+                            Sold = new_sold,
+                            Revenue = orderDetail.Quantity * orderDetail.Price,
+                            Profit = new_profit
+                        };
+                        
+                        _dataContext.Add(statistical);
+                    }
+                }    
+            }    
 
             try
             {

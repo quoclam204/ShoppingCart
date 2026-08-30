@@ -159,6 +159,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 existingProduct.Name = product.Name;
                 existingProduct.Price = product.Price;
                 existingProduct.Description = product.Description;
+                existingProduct.CapitalPrice = product.CapitalPrice;
                 existingProduct.CategoryId = product.CategoryId;
                 existingProduct.BrandId = product.BrandId;
                 existingProduct.Slug = slug;

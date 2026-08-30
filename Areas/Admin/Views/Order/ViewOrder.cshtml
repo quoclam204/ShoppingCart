@@ -49,8 +49,17 @@
                 @if (@ViewBag.Status != 3)
                 {
                     <select class="form-control select-update-order">
-                        <option value="1">Đơn hàng mới</option>
-                        <option value="0">Đã xử lý</option>
+                        @if (ViewBag.Status == 0)
+                        {
+                            <option disabled value="1">Đơn hàng mới</option>
+                            <option value="0">Đã xử lý</option>
+                        }
+                        else
+                        {
+                            <option value="1">Đơn hàng mới</option>
+                            <option value="0">Đã xử lý</option>
+                        }
+
                     </select>
                 }
             </td>

@@ -19,6 +19,10 @@
 
 	<link href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css" rel="stylesheet">
 
+    @* thống kê *@
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
 	@* datatablejs *@
 	<link href="https://cdn.datatables.net/buttons/3.2.6/css/buttons.dataTables.css" rel="stylesheet">
 
@@ -74,7 +78,8 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a asp-controller="Home" class="active">Trang chủ</a></li>		
+								<li><a asp-controller="Home" class="active">Trang chủ</a></li>
+								<li><a asp-controller="Dashboard">Dashboard</a></li>
 								<li><a asp-controller="Product">Quản lý sản phẩm</a></li>
 								<li><a asp-controller="Shipping">Quản lý vận chuyển</a></li>
 								<li><a asp-controller="Category">Quản lý danh mục</a></li>
@@ -136,6 +141,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 	<script src="https://cdn.datatables.net/buttons/3.2.6/js/buttons.html5.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/3.2.6/js/buttons.print.min.js"></script>
+
+	@* Thống kê *@
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
 	@* Hiển thị thông báo *@
 	<script>

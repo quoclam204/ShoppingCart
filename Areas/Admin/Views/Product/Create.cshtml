@@ -30,6 +30,19 @@
         </div>
 
         <div class="form-group">
+            <label>Giá vốn</label>
+
+            <!-- Ô nhập giá -->
+            <input asp-for="CapitalPrice" pattern="[0-9.,]+" class="form-control typing-capital-price " />
+
+            <!-- Hiển thị giá đã được định dạng -->
+            <span id="capital-price-convert"></span>
+
+            <!-- Hiển thị lỗi validation -->
+            <span asp-validation-for="CapitalPrice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <label>Mô tả</label>
             <textarea asp-for="Description" class="form-control"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
@@ -100,6 +113,20 @@
 
             // Định dạng số thành tiền Việt Nam và hiển thị vào phần tử có id="price-convert"
             $("#price-convert").html(
+                new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',   // Định dạng kiểu tiền tệ
+                    currency: 'VND'      // Đơn vị tiền là Việt Nam Đồng
+                }).format(currency_input) // Chuyển số thành định dạng tiền
+            );
+        });
+
+        $(".typing-capital-price").on("keyup", function () {
+
+            // Lấy giá trị người dùng vừa nhập
+            var currency_input = $(this).val();
+
+            // Định dạng số thành tiền Việt Nam và hiển thị vào phần tử có id="price-convert"
+            $("#capital-price-convert").html(
                 new Intl.NumberFormat('vi-VN', {
                     style: 'currency',   // Định dạng kiểu tiền tệ
                     currency: 'VND'      // Đơn vị tiền là Việt Nam Đồng

@@ -28,6 +28,9 @@ namespace ShoppingCart.Models
         [Required, Range(1, int.MaxValue, ErrorMessage = "Chọn một danh mục")]
         public int CategoryId { get; set; }
 
+        [Required(ErrorMessage = "Yêu cầu nhập giá vốn sản phẩm")]
+        public decimal CapitalPrice { get; set; }
+
         public BrandModel Brand { get; set; }   
         public CategoryModel Category { get; set; }
 
@@ -47,5 +50,7 @@ namespace ShoppingCart.Models
 
         // Số lượng đã bán
         public int Sold { get; set; }
+
+
     }
 }
