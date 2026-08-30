@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
 using ShoppingCart.Models;
@@ -24,17 +24,21 @@ namespace ShoppingCart.Services.MoMo
             model.OrderId = DateTime.Now.Ticks.ToString(); // Tạo orderId dựa vào thời gian hiện tại
             model.Orderinfo = "Khách hàng: " + model.FullName + ". Nội dung: " + model.Orderinfo; // Thêm thông tin khách hàng vào nội dung đơn hàng
 
-            // Dữ liệu cần lưu và mã hóa
+            // Chuyển Amount thành số nguyên dạng chuỗi (MoMo V2 không hỗ trợ số thập phân)
+            string amountString = Math.Round(Convert.ToDecimal(model.Amount)).ToString();
+
+            // Dữ liệu cần lưu và mã hóa theo chuẩn MoMo API v2 (sắp xếp theo thứ tự alphabet)
             var rawData =
-                $"partnerCode={_momoOptions.Value.PartnerCode}" +
-                $"&accessKey={_momoOptions.Value.AccessKey}" +
-                $"&requestId={model.OrderId}" +
-                $"&amount={model.Amount}" +
+                $"accessKey={_momoOptions.Value.AccessKey}" +
+                $"&amount={amountString}" +
+                $"&extraData=" +
+                $"&ipnUrl={_momoOptions.Value.NotifyUrl}" +
                 $"&orderId={model.OrderId}" +
                 $"&orderInfo={model.Orderinfo}" +
-                $"&returnUrl={_momoOptions.Value.ReturnUrl}" +
-                $"&notifyUrl={_momoOptions.Value.NotifyUrl}" +
-                $"&extraData=";
+                $"&partnerCode={_momoOptions.Value.PartnerCode}" +
+                $"&redirectUrl={_momoOptions.Value.ReturnUrl}" +
+                $"&requestId={model.OrderId}" +
+                $"&requestType={_momoOptions.Value.RequestType}";
 
             // tạo chữ ký
             var signature = ComputeHmacSha256(rawData, _momoOptions.Value.SecretKey);
@@ -47,16 +51,16 @@ namespace ShoppingCart.Services.MoMo
 
             request.AddHeader("Content-Type", "application/json; charset=UTF-8");
 
-            // gom dữ liệu thành 1 object
+            // gom dữ liệu thành 1 object theo chuẩn API v2
             var requestData = new
             {
-                accessKey = _momoOptions.Value.AccessKey,
                 partnerCode = _momoOptions.Value.PartnerCode,
                 requestType = _momoOptions.Value.RequestType,
-                notifyUrl = _momoOptions.Value.NotifyUrl,
-                returnUrl = _momoOptions.Value.ReturnUrl,
+                ipnUrl = _momoOptions.Value.NotifyUrl,
+                redirectUrl = _momoOptions.Value.ReturnUrl,
                 orderId = model.OrderId,
-                amount = model.Amount.ToString(),
+                amount = Convert.ToInt64(amountString),
+                lang = "vi",
                 orderInfo = model.Orderinfo,
                 requestId = model.OrderId,
                 extraData = "",

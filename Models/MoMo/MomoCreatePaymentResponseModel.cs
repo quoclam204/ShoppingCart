@@ -1,12 +1,15 @@
-﻿namespace ShoppingCart.Models.MoMo
+namespace ShoppingCart.Models.MoMo
 {
     public class MomoCreatePaymentResponseModel
     {
         // Mã yêu cầu do MoMo trả về
         public string RequestId { get; set; }
 
-        // Mã trạng thái (0 = thành công)
+        // Mã trạng thái V1 (0 = thành công)
         public int ErrorCode { get; set; }
+
+        // Mã trạng thái V2 (0 = thành công)
+        public int ResultCode { get; set; }
 
         // Mã đơn hàng
         public string OrderId { get; set; }

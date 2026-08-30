@@ -1,4 +1,4 @@
-﻿@using ShoppingCart.Models.ViewModels
+@using ShoppingCart.Models.ViewModels
 @model CartItemViewModel
 
 @{
@@ -129,7 +129,7 @@
                                 // Thanh toán
                                 <td>
                                     <form method="POST" asp-action="CreatePaymentMomo" asp-controller="Payment">
-                                        <input type="hidden" name="Amount" value="@Model.GrandTotal" />
+                                        <input type="hidden" name="Amount" value="@Math.Round(Model.GrandTotal)" />
                                         <input type="hidden" name="OrderId" value="@Guid.NewGuid().ToString()" />
                                         <input type="hidden" name="OrderInfo" value="Thanh toán MoMo cho đơn hàng tại LamStore" />
                                         <input type="hidden" name="Fullname" value="LamStore" />
